@@ -1,0 +1,12 @@
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
+#Platformio
+#
+.pioenvs
+.clang_complete
+.gcc-flags.json
+.piolibdeps
