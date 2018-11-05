@@ -47,10 +47,22 @@ void wifiConfigure() {
     jw.setHostname(getSetting("hostname", HOSTNAME).c_str());
     jw.setSoftAP(getSetting("hostname", HOSTNAME).c_str(), getSetting("adminPass", ADMIN_PASS).c_str());
     jw.setAPMode(AP_MODE_ALONE);
+	//give the user 5 min to do what they need to do before cycling if its in AP mode
+	jw.setReconnectTimeout(600000);
+
     jw.cleanNetworks();
-    if (getSetting("ssid0").length() > 0) jw.addNetwork(getSetting("ssid0").c_str(), getSetting("pass0").c_str());
-    if (getSetting("ssid1").length() > 0) jw.addNetwork(getSetting("ssid1").c_str(), getSetting("pass1").c_str());
-    if (getSetting("ssid2").length() > 0) jw.addNetwork(getSetting("ssid2").c_str(), getSetting("pass2").c_str());
+    if (getSetting("ssid0").length() > 0){
+		jw.addNetwork(getSetting("ssid0").c_str(), getSetting("pass0").c_str());
+    	DEBUG_MSG("[WIFI] Added Network - ssid:%s\n", getSetting("ssid0").c_str());
+	} 
+	if (getSetting("ssid1").length() > 0){
+		jw.addNetwork(getSetting("ssid1").c_str(), getSetting("pass1").c_str());
+		DEBUG_MSG("[WIFI] Added Network - ssid:%s\n", getSetting("ssid1").c_str());
+	} 
+    if (getSetting("ssid2").length() > 0){
+		jw.addNetwork(getSetting("ssid2").c_str(), getSetting("pass2").c_str());
+    	DEBUG_MSG("[WIFI] Added Network - ssid:%s\n", getSetting("ssid2").c_str());
+	} 
 }
 
 void wifiSetup() {
@@ -114,7 +126,7 @@ void wifiSetup() {
 		        DEBUG_MSG("[WIFI] IP   %s\n", WiFi.softAPIP().toString().c_str());
 		        DEBUG_MSG("[WIFI] MAC  %s\n", WiFi.softAPmacAddress().c_str());
 		        DEBUG_MSG("[WIFI] ----------------------------------------------\n");
-            displayWifiInfo((char*)"Access Point Mode:", (char*)jw.getAPSSID().c_str(), (char*)WiFi.softAPIP().toString().c_str());
+            displayWifiInfo((char*)"AP Mode - SSID: ", (char*)jw.getAPSSID().c_str(), (char*)WiFi.softAPIP().toString().c_str());
 		    }
 
 		    if (code == MESSAGE_DISCONNECTED) {

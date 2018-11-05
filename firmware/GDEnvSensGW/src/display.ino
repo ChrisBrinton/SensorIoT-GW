@@ -30,11 +30,11 @@ void displayWifiInfo(char* descr, char* SSID, char* IP){
   display.setFont(&TomThumb);
   display.ssd1306_command(SSD1306_SETSTARTLINE);
   display.setCursor(0,7);
-  display.print(String(descr));
+  display.print(String(descr)+String(SSID));
   display.setCursor(0,15);
-  display.print(String(SSID));
+  display.print(String("IP Addr:" + String(IP)));
   display.setCursor(0,23);
-  display.print(String(IP));
+  display.print(String("Firmware ver:") + String(APP_VERSION));
   display.display();
   delay(8000);
 
@@ -305,7 +305,7 @@ void displayTestInfo(){
   display.setCursor(0,31);
   display.print(tempString.c_str());
   display.display();
-  DEBUG_MSG("[DISPLAY] TestInfo %s\n", tempString.c_str());
+  //DEBUG_MSG("[DISPLAY] TestInfo %s\n", tempString.c_str());
   nodeList.nextNode();
 }
 
@@ -324,7 +324,7 @@ void displayLoop(){
     static int lastMillis = 0;
     int nowMillis = millis();
     if(nowMillis > (lastMillis + 2000)){
-      if (WiFi.getMode() != WIFI_AP){
+      if (WiFi.status() == WL_CONNECTED){
         displayInfo();
       } else {
         displayTestInfo();

@@ -81,10 +81,7 @@ void settingsSetup() {
     });
 
     Embedis::command( F("EEPROM.ERASE"), [](Embedis* e) {
-        for (unsigned int i = 0; i < SPI_FLASH_SEC_SIZE; i++) {
-            EEPROM.write(i, 0xFF);
-        }
-        EEPROM.commit();
+        eraseAllSettings();
         e->response(Embedis::OK);
     });
 
@@ -128,17 +125,11 @@ void saveSettings() {
 }
 
 bool eraseAllSettings() {
-  delSetting("ssid0");
-  delSetting("ssid1");
-  delSetting("ssid2");
-  delSetting("pass0");
-  delSetting("pass1");
-  delSetting("pass2");
-
   for (unsigned int i = 0; i < SPI_FLASH_SEC_SIZE; i++) {
       EEPROM.write(i, 0xFF);
   }
   EEPROM.commit();
+
   DEBUG_MSG("[SETTINGS] All Settings Erased");
-  displayMsg("All Settings Erased");
+  displayMsg((char*)"All Settings Erased");
 }

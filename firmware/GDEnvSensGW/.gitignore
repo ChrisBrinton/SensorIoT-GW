@@ -10,3 +10,12 @@ yarn-error.log
 .clang_complete
 .gcc-flags.json
 .piolibdeps
+
+#VSCode
+#
+.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

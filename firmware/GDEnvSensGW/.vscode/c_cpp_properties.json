@@ -127,5 +127,6 @@
             "cppStandard": "c++11",
             "compilerPath": "C:/Users/cbrinton/.platformio/packages/toolchain-xtensa/bin/xtensa-lx106-elf-gcc.exe"
         }
-    ]
+    ],
+    "version": 4
 }
