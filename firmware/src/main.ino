@@ -190,7 +190,7 @@ void processMessage(packet_t * data) {
 
 }
 
-char* getTopicMapping(String ID, String key) {
+String getTopicMapping(String ID, String key) {
   String returnTopic = "BLANK";
   // Try to find a matching mapping
   unsigned int count = getSetting("mappingCount", "0").toInt();
@@ -199,7 +199,7 @@ char* getTopicMapping(String ID, String key) {
           (getSetting("key" + String(i)) == key)) {
           returnTopic = String(String(getSetting("topic" + String(i)).c_str()) + key);
           DEBUG_MSG("[MESSAGE] getTopicMapping returning: %s\n", returnTopic.c_str());
-          return (char*)returnTopic.c_str();
+          return returnTopic;
       }
   }
 
@@ -213,10 +213,10 @@ char* getTopicMapping(String ID, String key) {
       returnTopic.replace("{hostname}", tmpHN);
       returnTopic += "/";
       DEBUG_MSG("[MESSAGE] getTopicMapping returning default topic: %s\n", returnTopic.c_str());
-      return (char*)returnTopic.c_str();
+      return returnTopic;
     }
-    DEBUG_MSG("[MESSAGE] getTopicMapping returning: 0 This shouldnt happen\n", returnTopic.c_str());
-  return 0;
+    DEBUG_MSG("[MESSAGE] getTopicMapping returning: BLANK This shouldnt happen\n", returnTopic.c_str());
+  return returnTopic;
 }
 
 void sendNodeToMQTT(_node_t * node) {
@@ -226,11 +226,11 @@ void sendNodeToMQTT(_node_t * node) {
 
   DEBUG_MSG("[MESSAGE] would send topic:%s value:%s \n", msg, node->THP->F.c_str());
 */
-  mqttSend((char*) getTopicMapping(String(node->senderID), String("F")), (char *) node->THP->F.c_str());
-  mqttSend((char*) getTopicMapping(String(node->senderID), String("H")), (char *) node->THP->H.c_str());
-  mqttSend((char*) getTopicMapping(String(node->senderID), String("P")), (char *) node->THP->P.c_str());
-  mqttSend((char*) getTopicMapping(String(node->senderID), String("BAT")), (char *) node->THP->BAT.c_str());
-  mqttSend((char*) getTopicMapping(String(node->senderID), String("RSSI")), (char *) node->THP->RSSI.c_str());
+  mqttSend((char*) getTopicMapping(String(node->senderID), String("F")).c_str(), (char *) node->THP->F.c_str());
+  mqttSend((char*) getTopicMapping(String(node->senderID), String("H")).c_str(), (char *) node->THP->H.c_str());
+  mqttSend((char*) getTopicMapping(String(node->senderID), String("P")).c_str(), (char *) node->THP->P.c_str());
+  mqttSend((char*) getTopicMapping(String(node->senderID), String("BAT")).c_str(), (char *) node->THP->BAT.c_str());
+  mqttSend((char*) getTopicMapping(String(node->senderID), String("RSSI")).c_str(), (char *) node->THP->RSSI.c_str());
 }
 
 // -----------------------------------------------------------------------------

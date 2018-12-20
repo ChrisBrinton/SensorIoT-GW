@@ -3,6 +3,7 @@
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSans12pt7b.h>
 #include <Fonts/FreeSans18pt7b.h>
+//#include <Fonts/FreeMono18pt7b.h>
 #include <Fonts/FreeSans24pt7b.h>
 #include <Fonts/TomThumb.h>
 #include <Fonts/PicoPixel.h>
@@ -117,6 +118,7 @@ void scrollUpDB(int numoflines){
 }
 
 void BuildCurrentTimePage(int iYOffset) {
+  bool timeDisplayTest = false;
   String timeString = "";
   String ampmString = "";
   int hours, centerx;
@@ -135,16 +137,62 @@ void BuildCurrentTimePage(int iYOffset) {
   else{
     ampmString = "AM";
   }
+  //Using this will dummy the time display, cycling through at a second per min
+  //Useful for testing font compatibility and spacing.
+  if(timeDisplayTest == true) {
+
+    timeString = "";
+    static int dummyHours = 12;
+    static int dummyMin = 0;
+    static int ampm = 0;
+    dummyMin += 1;
+    if(dummyMin>59){
+      dummyHours +=1;
+      dummyMin = 0;
+    }
+    if(dummyHours>12){
+      dummyHours = dummyHours -12;
+      if(ampm == 1){
+        ampm = 0;
+      } else {
+        ampm = 1;
+      }
+    }
+    if(ampm == 0){
+      ampmString = "AM";
+    } else {
+      ampmString = "PM";
+    }
+    timeString = timeString + String(dummyHours) + ":";
+    if(dummyMin<10){
+      timeString = timeString + "0";
+    }
+    timeString = timeString + String(dummyMin);
+  }
+  
   // do these shenanigans to determine the width of the time we want to print
   // so that we can center it on the screen
   int16_t x1,y1;
   uint16_t w,h;
   int total_w = 0;
+  int widthAdjust = 0;
+  //There is an issue either with the Adafruit GFX lib or with the FreeSans18pt7b font
+  //where the width returned via getTextBounds is off by a pixel or two depending on the
+  //trailing digit. So this little hack corrects for that. There are other pixel shifts (i.e. for digits
+  //that arent trailing) but they are less visible and I havent bothered to correct for them.
+  if(timeString.endsWith("1")){
+    widthAdjust = 6;
+  } else if (timeString.endsWith("4") || timeString.endsWith("9")) {
+    widthAdjust = 2;
+  } else {
+    widthAdjust = 0;
+  }
   display.setFont(&FreeSans18pt7b);
   display.getTextBounds((char*)timeString.c_str(),0,31,&x1,&y1,&w,&h);
-  total_w = w;
+  total_w = w + widthAdjust;
   display.setFont(&FreeSans9pt7b);
   display.getTextBounds((char*)ampmString.c_str(),0,31,&x1,&y1,&w,&h);
+  //DEBUG_MSG("Width 1 %i Width 2 %i\n", total_w, w);
   total_w = total_w + w;
 
   centerx = ((SSD1306_LCDWIDTH - total_w-11)/2)-iYOffset;
@@ -244,11 +292,11 @@ void buildNodeDisplayPage(int iYOffset){
   } else if (dBAT > 3.0){
     iBatLvl=1;
   } else if (dBAT < 2.0){
-    if(dBAT > 1.4){
+    if(dBAT > 1.2){
       iBatLvl=3;
-    } else if (dBAT > 1.2) {
-      iBatLvl=2;
     } else if (dBAT > 1.0) {
+      iBatLvl=2;
+    } else if (dBAT > .9) {
       iBatLvl=1;
     }
   }
