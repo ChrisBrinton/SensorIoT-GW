@@ -56,6 +56,10 @@
                             <a href="#" class="pure-menu-link" data="panel-messages">MESSAGES</a>
                         </li>
 
+                        <li class="pure-menu-item">
+                            <a href="#" class="pure-menu-link" data="panel-firmware">FIRMWARE</a>
+                        </li>
+
                     </ul>
 
                     <div class="main-buttons">
@@ -330,14 +334,28 @@
 
                 </form>
 
-                <div id="template">
-                    <div class="pure-g">
-                        <div class="pure-u-md-1-6 pure-u-1-2"><input name="nodeid" type="text" class="pure-u-11-12" value="" size="8" tabindex="0" placeholder="Node ID"></div>
-                        <div class="pure-u-md-1-6 pure-u-1-2"><input name="key" type="text" class="pure-u-11-12" value="" size="8" tabindex="0" placeholder="Key"></div>
-                        <div class="pure-u-md-1-2 pure-u-3-4"><input name="topic" type="text" class="pure-md-11-12 pure-u-23-24" value="" size="8" tabindex="0" placeholder="MQTT Topic"></div>
-                        <div class="pure-u-md-1-6 pure-u-1-4"><button type="button" class="pure-button button-del pure-u-5-6 pure-u-md-5-6">Del</button></div>
+                <form id="formUpdateFirmware" class="pure-form" action="/upload" enctype='multipart/form-data' method="post">
+
+                    <div class="panel" id="panel-firmware">
+                        <div class="header">
+                            <h1>FIRMWARE</h1>
+                            <h2>
+                                Install new version of firmware by choosing a valid firmware update file and
+                                then clicking "Update Firmware"
+                            </h2>
+                        </div>
+                        <div class="page">
+                            <div class="upload-btn-wrapper">
+                                <button class="pure-button button-firmware button-upload-file">Upload a file</button>
+                                <input type="file" name="firmwareUpdateFile" />
+                           </div>
+                        </div>
+                        <div class="page">
+                            <input class="pure-button button-firmware button-update-firmware" type="submit" value="Update Firmware1" name="submit"/>
+                        </div>
                     </div>
-                </div>
+                
+                </form>
 
             </div> <!-- content -->
 

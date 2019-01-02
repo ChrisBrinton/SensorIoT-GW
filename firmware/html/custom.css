@@ -44,6 +44,11 @@
     margin-top: 5px;
     background: rgb(28, 184, 65);
 }
+.button-update-firmware {
+    margin-top: 5px;
+    margin-left: 5px;
+    background: rgb(28, 184, 65);
+}
 .button-del {
     margin-top: 5px;
     background: rgb(202, 60, 60);
@@ -53,7 +58,25 @@
     margin-top: 15px;
     background: rgb(202, 60, 60);
 }
-
+.button-firmware {
+    width: 150px;
+    margin: 50px auto;
+}
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+.button-upload-file {
+    background-color: #1f8dd6;
+}
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity:0;
+}
 .pure-g {
     margin-bottom: 20px;
 }

@@ -65,6 +65,11 @@ function doClearFilters() {
     return false;
 }
 
+function doUpdateFirmware() {
+    //var file = $("#formUpdateFirmware").file();
+    websock.send(JSON.stringify({'update_firmware' : 'filenamegoeshere'}))
+}
+
 function showPanel() {
     $(".panel").hide();
     $("#" + $(this).attr("data")).show();

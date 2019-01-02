@@ -5,6 +5,8 @@ WEBSERVER MODULE
 
 Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
 
+Updated 2018 by Chris Brinton to support file upload
+
 */
 
 #include <ESPAsyncTCP.h>
@@ -67,6 +69,12 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
         if (action.equals("clear-counts")) clearCounts();
 
     };
+
+    // Check update_firmware
+    if (root.containsKey("update_firmware")) {
+        DEBUG_MSG("[WEBSOCKET] Update Firmware requested\n");
+        httpUpdateFirmware();
+    }
 
     // Check config
     if (root.containsKey("config") && root["config"].is<JsonArray&>()) {
@@ -368,6 +376,40 @@ bool _apiAuth(AsyncWebServerRequest *request) {
 
 }
 
+void _onUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
+    //TODO: check if this is a legit file (MD5 hash? or just filename format?)
+    int update_command = U_FLASH;
+    if(filename.indexOf("SPIFFS")>0){
+        update_command = U_SPIFFS;
+        DEBUG_MSG("[WEBSERVER] OTA for SPIFFS selected\n");
+    } 
+    DEBUG_MSG("[WEBSERVER] Upload Firmware started, index: %d  len: %d  final: %d\n", index, len, final);
+    uint32_t maxSketchSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;
+    if(0 == index) {
+      DEBUG_MSG("[WEBSERVER] UploadStart: %s\n", filename.c_str());
+      //Update.begin(maxSketchSpace, U_SPIFFS);
+      if(!Update.begin(maxSketchSpace, update_command)){ 
+            DEBUG_MSG("[WEBSERVER] Update begin failure!\n"); 
+        } else {
+            DEBUG_MSG("[WEBSERVER] Update starting\n");
+            Update.runAsync(true); // this is required to run with the ESPAsyncWebServer
+        }
+    }
+    if(Update.write(data, len) != len){
+        Update.printError(Serial);
+    } else { DEBUG_MSG("[WEBSERVER] Write: %d bytes\n", len); }
+    if(final) {
+      DEBUG_MSG("[WEBSERVER] UploadEnd: %s (%u)\n", filename.c_str(), index+len);
+      if (Update.end(true)) {
+        DEBUG_MSG("[WEBSERVER] Update succesful! Restarting gateway.");
+        request->send(200);
+        ESP.restart();
+       } else {
+        Update.printError(Serial);   
+       }
+    }  
+}
+
 void webSetup() {
 
     // Setup websocket plugin
@@ -378,6 +420,10 @@ void webSetup() {
     server.on("/", HTTP_GET, _onHome);
     server.on("/index.html", HTTP_GET, _onHome);
     server.on("/auth", HTTP_GET, _onAuth);
+    // upload a file to /upload
+    server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request){
+      request->send(200);
+    }, _onUpload);
 
     // Serve static files
     server.serveStatic("/", SPIFFS, "/");

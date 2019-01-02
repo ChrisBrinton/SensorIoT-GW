@@ -21,6 +21,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+Forked/Updated 2017-2018 by Chris Brinton for the SensorIoT project
+
 */
 
 #include <Arduino.h>
