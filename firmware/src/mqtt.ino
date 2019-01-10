@@ -64,7 +64,7 @@ void mqttConnect() {
         if (millis() - last_try < MQTT_TRY_INTERVAL) {
             if (++connectTries >= MQTT_MAX_TRIES) {
                 DEBUG_MSG("[MQTT] Failed to connect to MQTT broker. Max tries exceeded\n");
-                displayMsg((char*)"MQTT Connect failed. Restarting");
+                stageDisplayMsg((char*)"MQTT Connect failed. Restarting");
                 wifiDisconnect();
                 connectTries = 0;
                 return;

@@ -4,6 +4,7 @@
 //
 //  Created by Karlina Beringer on June 12, 2014.
 //  This source file contains the NodeList class definitions.
+//  Modified by Chris Brinton 2017-1019 to include node meta data.
 //*******************************************************************
 
 #include "NodeList.h"

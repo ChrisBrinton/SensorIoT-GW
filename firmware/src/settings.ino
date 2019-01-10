@@ -131,5 +131,5 @@ bool eraseAllSettings() {
   EEPROM.commit();
 
   DEBUG_MSG("[SETTINGS] All Settings Erased");
-  displayMsg((char*)"All Settings Erased");
+  stageDisplayMsg((char*)"All Settings Erased");
 }

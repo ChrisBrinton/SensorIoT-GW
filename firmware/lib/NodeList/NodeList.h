@@ -21,7 +21,6 @@
 
 //*******************************************************************
 // Node structs contain data and a pointer to the next node.
-// In this project, it will represent a song/artist combination.
 //*******************************************************************
 struct node
 {
@@ -32,13 +31,12 @@ struct node
 
 //*******************************************************************
 // NodeList is a list of singly-linked nodes.
-// In this project, it will represent a song playlist.
 //*******************************************************************
 class NodeList
 {
 private:
-    // Head of the list contains no song data,
-    // but points to the song playlist.
+    // Head of the list contains no data,
+    // but points to the list.
     node* head;
     int listLength;
     node* nodeptr;

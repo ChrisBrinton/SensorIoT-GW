@@ -5,7 +5,7 @@ WEBSERVER MODULE
 
 Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
 
-Updated 2018 by Chris Brinton to support file upload
+Updated 2018-2019 by Chris Brinton to support file upload and firmware update
 
 */
 
@@ -21,6 +21,9 @@ Updated 2018 by Chris Brinton to support file upload
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 Ticker deferred;
+
+extern "C" uint32_t _SPIFFS_start;
+extern "C" uint32_t _SPIFFS_end;
 
 typedef struct {
     IPAddress ip;
@@ -69,12 +72,6 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
         if (action.equals("clear-counts")) clearCounts();
 
     };
-
-    // Check update_firmware
-    if (root.containsKey("update_firmware")) {
-        DEBUG_MSG("[WEBSOCKET] Update Firmware requested\n");
-        httpUpdateFirmware();
-    }
 
     // Check config
     if (root.containsKey("config") && root["config"].is<JsonArray&>()) {
@@ -378,36 +375,68 @@ bool _apiAuth(AsyncWebServerRequest *request) {
 
 void _onUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
     //TODO: check if this is a legit file (MD5 hash? or just filename format?)
-    int update_command = U_FLASH;
-    if(filename.indexOf("SPIFFS")>0){
-        update_command = U_SPIFFS;
-        DEBUG_MSG("[WEBSERVER] OTA for SPIFFS selected\n");
-    } 
-    DEBUG_MSG("[WEBSERVER] Upload Firmware started, index: %d  len: %d  final: %d\n", index, len, final);
-    uint32_t maxSketchSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;
+    int update_command;
+    uint32_t maxSpace;
+    static bool goodFilename = false;
+
+    //DEBUG_MSG("[WEBSERVER] Upload in progress: %s, index: %d  len: %d  final: %d\n", filename.c_str(), index, len, final);
+
     if(0 == index) {
-      DEBUG_MSG("[WEBSERVER] UploadStart: %s\n", filename.c_str());
-      //Update.begin(maxSketchSpace, U_SPIFFS);
-      if(!Update.begin(maxSketchSpace, update_command)){ 
-            DEBUG_MSG("[WEBSERVER] Update begin failure!\n"); 
+        DEBUG_MSG("[WEBSERVER] Firmware upload requested for %s. Validating filename\n", filename.c_str());
+        if(filename.indexOf("GDESGW1_SPIFFS")>-1){
+            update_command = U_SPIFFS;
+            DEBUG_MSG("[WEBSERVER] OTA for SPIFFS selected\n");
+            maxSpace = ((size_t) &_SPIFFS_end - (size_t) &_SPIFFS_start);
+            SPIFFS.end();
+            goodFilename = true;
+        } else if(filename.indexOf("GDESGW1_FW")>-1) {
+            update_command = U_FLASH;
+            DEBUG_MSG("[WEBSERVER] OTA for Firmware selected\n");
+            maxSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;
+            goodFilename = true;
+        } else {
+            DEBUG_MSG("[WEBSERVER] No filename format for %s ! Restarting!\n", filename.c_str());
+            char buffer[70] = "{\"firmwareEvent\": \"Upload not accepted. Bad Filename.\"}";
+            wsSend(buffer);
+            setRestartCountdown(5);
+            goodFilename = false;
+            return;
+        }
+        DEBUG_MSG("[WEBSERVER] Upload start: %s\n", filename.c_str());
+        //Update.begin(maxSketchSpace, U_SPIFFS);
+        if(!Update.begin(maxSpace, update_command)){ 
+            DEBUG_MSG("[WEBSERVER] Update begin failure! Restarting!\n");
+            Update.printError(Serial); 
+            char buffer[70] = "{\"firmwareEvent\": \"Upload failed due to an internal error.\"}";
+            wsSend(buffer);
+            setRestartCountdown(5);
         } else {
             DEBUG_MSG("[WEBSERVER] Update starting\n");
             Update.runAsync(true); // this is required to run with the ESPAsyncWebServer
         }
     }
+
+    //if we didnt get a good filename initially, just ignore the upload
+    if (goodFilename == false){
+        return;
+    }
     if(Update.write(data, len) != len){
         Update.printError(Serial);
-    } else { DEBUG_MSG("[WEBSERVER] Write: %d bytes\n", len); }
+    } else { 
+        //DEBUG_MSG("[WEBSERVER] Write: %d bytes\n", len); 
+        DEBUG_MSG(".");
+    }
     if(final) {
-      DEBUG_MSG("[WEBSERVER] UploadEnd: %s (%u)\n", filename.c_str(), index+len);
+      DEBUG_MSG("\n[WEBSERVER] UploadEnd: %s (%u)\n", filename.c_str(), index+len);
       if (Update.end(true)) {
-        DEBUG_MSG("[WEBSERVER] Update succesful! Restarting gateway.");
-        request->send(200);
-        ESP.restart();
+        DEBUG_MSG("[WEBSERVER] Update succesful! Restarting gateway.\n");
+        char buffer[60] = "{\"firmwareEvent\": \"uploadSuccess\"}";
+        wsSend(buffer);
+        setRestartCountdown(15);
        } else {
         Update.printError(Serial);   
        }
-    }  
+    }
 }
 
 void webSetup() {

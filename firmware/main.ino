@@ -234,7 +234,12 @@ String getTopicMapping(String ID, String key) {
 }
 
 void sendNodeToMQTT(_node_t * node) {
+  /*
+  char* msg;
+  msg = (char*) getTopicMapping(String(node->senderID), String("F"));
 
+  DEBUG_MSG("[MESSAGE] would send topic:%s value:%s \n", msg, node->THP->F.c_str());
+*/
   mqttSend((char*) getTopicMapping(String(node->senderID), String("F")).c_str(), (char *) node->THP->F.c_str());
   mqttSend((char*) getTopicMapping(String(node->senderID), String("H")).c_str(), (char *) node->THP->H.c_str());
   mqttSend((char*) getTopicMapping(String(node->senderID), String("P")).c_str(), (char *) node->THP->P.c_str());
@@ -247,12 +252,10 @@ void sendNodeToMQTT(_node_t * node) {
 // -----------------------------------------------------------------------------
 
 void hardwareSetup() {
-	
     Serial.begin(SERIAL_BAUDRATE);
     SPIFFS.begin();
     pinMode(LED_PIN, OUTPUT);
     ledOff();
-	
 }
 
 void hardwareLoop() {
@@ -348,7 +351,7 @@ void setup() {
     ntpSetup();
     sensorSetup();
     displaySetup();
-    restartSetup();
+//    restartSetup();
 
 }
 
@@ -363,7 +366,7 @@ void loop() {
     ntpLoop();
     sensorLoop();
     displayLoop();
-    restartLoop();
+//    restartLoop();
 
     yield();
 

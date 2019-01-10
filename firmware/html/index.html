@@ -232,9 +232,9 @@
 
                             <fieldset>
 
-                                <div class="pure-g">
+                                <div class="checkbox-row pure-g">
                                     <label class="pure-u-1 pure-u-md-1-4" for="mqttEnabled">MQTT Enabled</label>
-                                    <input class="pure-u-1 pure-u-md-1-4" name="mqttEnabled" type="checkbox"  />
+                                    <input class="gd-checkbox" name="mqttEnabled" type="checkbox"  />
                                 </div>
 
                                 <div class="pure-g">
@@ -334,29 +334,29 @@
 
                 </form>
 
-                <form id="formUpdateFirmware" class="pure-form" action="/upload" enctype='multipart/form-data' method="post">
-
-                    <div class="panel" id="panel-firmware">
-                        <div class="header">
-                            <h1>FIRMWARE</h1>
-                            <h2>
-                                Install new version of firmware by choosing a valid firmware update file and
-                                then clicking "Update Firmware"
-                            </h2>
-                        </div>
-                        <div class="page">
-                            <div class="upload-btn-wrapper">
-                                <button class="pure-button button-firmware button-upload-file">Upload a file</button>
-                                <input type="file" name="firmwareUpdateFile" />
-                           </div>
-                        </div>
-                        <div class="page">
-                            <input class="pure-button button-firmware button-update-firmware" type="submit" value="Update Firmware1" name="submit"/>
-                        </div>
+                <div class="panel" id="panel-firmware">
+                    <div class="header">
+                        <h1>FIRMWARE</h1>
+                        <h2>
+                            Install new version of firmware by choosing a valid firmware update file and then clicking "Update Firmware"
+                        </h2>
                     </div>
+                    <div class="page">
+                        <div class="upload-btn-wrapper">
+                            <button id="buttonUploadFile" class="pure-button button-firmware button-upload-file">Choose File</button>
+                            <input class="choose-firmware-file" type="file" name="firmwareUpdateFile" id="firmwareUpdateFile" />
+                        </div>
+                        <div class="pure-g">
+                            <progress id="fileUploadProgressBar" class="firmware-progress pure-u-1 pure-u-md-1-2" value="0" max="100" style="width:300px;"></progress>
+                            <p id="loaded_n_total" class="firmware-progress pure-u-1-2 pure-u-md-1-2"></p>
+                        </div>
+                        <div>
+                            <p id="fileUploadStatus"></p>
+                        </div>
+                            <button id="buttonUpdateFirmware" class="pure-button button-firmware button-update-firmware">Update Firmware</button>
+                    </div>
+                </div>
                 
-                </form>
-
             </div> <!-- content -->
 
         </div> <!-- layout -->

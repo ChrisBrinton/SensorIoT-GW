@@ -67,8 +67,71 @@ function doClearFilters() {
 
 function doUpdateFirmware() {
     //var file = $("#formUpdateFirmware").file();
-    websock.send(JSON.stringify({'update_firmware' : 'filenamegoeshere'}))
+    //websock.send(JSON.stringify({'update_firmware' : 'filenamegoeshere'}))
+    const file = document.querySelector('[type=file]').files[0];
+    const formData = new FormData();
+
+    console.log("doUpdateFirmware");
+
+    if( file ) {
+
+        formData.append('file', file);
+
+        var ajax = new XMLHttpRequest();
+        ajax.upload.addEventListener("progress", progressHandler, false);
+        ajax.addEventListener("load", completeHandler, false);
+        ajax.addEventListener("error", errorHandler, false);
+        ajax.addEventListener("abort", abortHandler, false);
+        ajax.open("POST", "/upload");
+        ajax.send(formData);
+
+    //    .then(response => {
+    //        console.log(response);
+    //    });
+
+    } else {
+        alert("Please select a file");
+    }
 }
+
+function progressHandler(event) {
+    document.getElementById("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
+    var percent = (event.loaded / event.total) * 100;
+    document.getElementById("fileUploadProgressBar").value = Math.round(percent);
+    document.getElementById("fileUploadStatus").innerHTML = Math.round(percent) + "% uploaded... please wait";
+}
+  
+function completeHandler() {
+    //console.log("completed");
+    document.getElementById("fileUploadStatus").innerHTML = "Firmware Uploaded Successfully. GW will restart in 15s. Web page will automatically refresh in 60s";
+    window.setTimeout(function(){
+        window.location.href = "/";
+    }, 60000);
+}
+  
+function errorHandler(event) {
+    document.getElementById("fileUploadStatus").innerHTML = "Upload Error";
+}
+  
+function abortHandler(event) {
+    document.getElementById("fileUploadStatus").innerHTML = "Upload Aborted";
+}
+
+function doUploadFileChange(event) {
+    var uploadButton = document.getElementById("buttonUploadFile");
+
+    var labelVal = uploadButton.innerHTML;
+
+    var fileName = "";
+    if( event.target.value ) {
+        fileName = event.target.value.split("\\").pop();
+
+        if( fileName )
+            uploadButton.innerHTML = fileName;
+        else
+            uploadButton.innerHTML = labelVal;
+    }
+};
 
 function showPanel() {
     $(".panel").hide();
@@ -98,6 +161,8 @@ function toggleMenu() {
 }
 
 function processData(data) {
+
+    //console.log("WebSocket data received: ", data);
 
     // title
     if ("app" in data) {
@@ -203,6 +268,16 @@ function processData(data) {
             return;
         }
 
+        // firmware events
+        if (key == "firmwareEvent") {
+            if(data.firmwareEvent == "uploadSuccess"){
+                completeHandler();
+            } else {
+                window.alert(data.firmwareEvent);
+            }
+            return;
+        }
+
     });
 
 }
@@ -242,6 +317,10 @@ function init() {
     $(".pure-menu-link").on('click', showPanel);
     $('#messages tbody').on('mousedown', 'td', doFilter);
 
+    $(".button-update-firmware").on("click", doUpdateFirmware);
+    $(".choose-firmware-file").on("change", doUploadFileChange)
+    //document.getElementById("firmwareUpdateFile").addEventListener("change", doUploadFileChange(event));
+
     messages = $('#messages').DataTable({
         "paging": false
     });
@@ -249,6 +328,7 @@ function init() {
     for (var i = 0; i < messages.columns()[0].length; i++) {
         filters[i] = false;
     }
+
 
     $.ajax({
         'method': 'GET',

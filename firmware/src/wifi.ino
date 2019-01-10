@@ -116,7 +116,8 @@ void wifiSetup() {
 		        DEBUG_MSG("[WIFI] DNS  %s\n", WiFi.dnsIP().toString().c_str());
 		        DEBUG_MSG("[WIFI] HOST %s\n", WiFi.hostname().c_str());
 		        DEBUG_MSG("[WIFI] ----------------------------------------------\n");
-            displayWifiInfo((char*)"Connected to:", (char*)WiFi.SSID().c_str(), (char*)WiFi.localIP().toString().c_str());
+
+            	stageWifiInfo((char*)"Connected to:", (char*)WiFi.SSID().c_str(), (char*)WiFi.localIP().toString().c_str());
 		    }
 
 		    if (code == MESSAGE_ACCESSPOINT_CREATED) {
@@ -126,7 +127,8 @@ void wifiSetup() {
 		        DEBUG_MSG("[WIFI] IP   %s\n", WiFi.softAPIP().toString().c_str());
 		        DEBUG_MSG("[WIFI] MAC  %s\n", WiFi.softAPmacAddress().c_str());
 		        DEBUG_MSG("[WIFI] ----------------------------------------------\n");
-            displayWifiInfo((char*)"AP Mode - SSID: ", (char*)jw.getAPSSID().c_str(), (char*)WiFi.softAPIP().toString().c_str());
+
+            	stageWifiInfo((char*)"AP Mode - SSID: ", (char*)jw.getAPSSID().c_str(), (char*)WiFi.softAPIP().toString().c_str());
 		    }
 
 		    if (code == MESSAGE_DISCONNECTED) {
