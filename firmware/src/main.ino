@@ -110,7 +110,7 @@ void processMessage(packet_t * data) {
     blink(5, 1);
 
     DEBUG_MSG(
-        "[MESSAGE] messageID:%d senderID:%d targetID:%d packetID:%d rssi:%d\n",
+        "[MESSAGE] messageID:%lu senderID:%d targetID:%d packetID:%d rssi:%d\n",
         data->messageID,
         data->senderID,
         data->targetID,
@@ -229,7 +229,7 @@ String getTopicMapping(String ID, String key) {
       DEBUG_MSG("[MESSAGE] getTopicMapping returning default topic: %s\n", returnTopic.c_str());
       return returnTopic;
     }
-    DEBUG_MSG("[MESSAGE] getTopicMapping returning: BLANK This shouldnt happen\n", returnTopic.c_str());
+    DEBUG_MSG("[MESSAGE] getTopicMapping returning: BLANK This shouldnt happen\n");
   return returnTopic;
 }
 

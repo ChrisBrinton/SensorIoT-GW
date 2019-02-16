@@ -90,7 +90,7 @@ void settingsSetup() {
     });
 
     DEBUG_MSG("[SETTINGS] EEPROM size: %d bytes\n", SPI_FLASH_SEC_SIZE);
-    DEBUG_MSG("[SETTINGS] Settings size: %d bytes\n", settingsSize());
+    DEBUG_MSG("[SETTINGS] Settings size: %lu bytes\n", settingsSize());
 
 }
 
@@ -132,4 +132,6 @@ bool eraseAllSettings() {
 
   DEBUG_MSG("[SETTINGS] All Settings Erased");
   stageDisplayMsg((char*)"All Settings Erased");
+
+  return true;
 }

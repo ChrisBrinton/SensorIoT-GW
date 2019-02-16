@@ -196,7 +196,7 @@ void buildNodeDisplayPage(int iYOffset){
     uint16_t w,h;
     uint8_t iNodeID;
     String tempString = "";
-    int iF, iH, iP , iRSSI, iPageOffset;
+    int iF, iH, iRSSI, iPageOffset;
 
     iNodeID = nodeList.currentNode();
     //if the day has rolled since the last update time then the age can return a neg number
@@ -213,7 +213,6 @@ void buildNodeDisplayPage(int iYOffset){
 
     iF = int(atof(nodeInfo[nodeList.currentNode()].THP->F.c_str())+.49);
     iH = int(atof(nodeInfo[nodeList.currentNode()].THP->H.c_str())+.49);
-    iP = int(atof(nodeInfo[nodeList.currentNode()].THP->P.c_str())+.49);
     iRSSI = int(atof(nodeInfo[nodeList.currentNode()].THP->RSSI.c_str())+.49);
 
     iPageOffset = -1;
@@ -278,7 +277,7 @@ void buildNodeDisplayPage(int iYOffset){
         iBatLvl=2;
     } else if (dBAT > 3.0){
         iBatLvl=1;
-    } else if (dBAT < 2.0){
+    } else if (dBAT < 2.7){
       if(dBAT > 1.2){
           iBatLvl=3;
       } else if (dBAT > 1.0) {
@@ -463,8 +462,8 @@ void maintainDisplayState() {
         displayStateBuffer[displayBufferOut].secondsToHold--;
         if(displayStateBuffer[displayBufferOut].secondsToHold <= 0){
             DEBUG_MSG("[DISPLAY] Removing element: %i from displayStateBuffer\n", displayBufferOut);
-            displayStateBuffer[displayBufferOut].displayState == DISPLAY_STATE_NONE;
-            displayStateBuffer[displayBufferOut].secondsToHold == 0;
+            displayStateBuffer[displayBufferOut].displayState = DISPLAY_STATE_NONE;
+            displayStateBuffer[displayBufferOut].secondsToHold = 0;
 
             displayBufferOut = (displayBufferOut + 1) % DISPLAYBUFFERSIZE;
             
@@ -503,6 +502,9 @@ void displayLoop(){
             case DISPLAY_STATE_TEST:
                 //DEBUG_MSG("[DISPLAY] DISPLAY_STATE_TEST\n");
                 displayTestInfo();
+                break;
+            case DISPLAY_STATE_NONE:
+                displayInfo();
                 break;
             default:
                 displayInfo();

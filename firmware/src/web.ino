@@ -38,11 +38,15 @@ ws_ticket_t _ticket[WS_BUFFER_SIZE];
 bool wsSend(const char * payload) {
     //DEBUG_MSG("[WEBSOCKET] Broadcasting '%s'\n", payload);
     ws.textAll(payload);
+
+    return true;
 }
 
 bool wsSend(uint32_t client_id, const char * payload) {
     //DEBUG_MSG("[WEBSOCKET] Sending '%s' to #%ld\n", payload, client_id);
     ws.text(client_id, payload);
+
+    return true;
 }
 
 void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
