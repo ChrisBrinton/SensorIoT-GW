@@ -1,6 +1,6 @@
 # The firmware for the SensorIoT GW
 
-The firmware is based on Xose Perez project [RFM69GW](https://bitbucket.org/xoseperez/rfm69gw) with has been modified to include a display as well as working with the SensorIoT App and server side.
+The firmware is based on Xose Perez project [RFM69GW](https://bitbucket.org/xoseperez/rfm69gw) which has been modified to include a display as well as working with the SensorIoT App and server side.
 
 ## Installation
 
@@ -15,4 +15,4 @@ Then install the repo
 
     git clone https://github.com/ChrisBrinton/SensorIoT-GW
 
-From within the platformio environment 
+From within the platformio environment execute platformio run
