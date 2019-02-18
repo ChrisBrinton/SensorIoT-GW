@@ -326,21 +326,21 @@ void displayTestInfo(){
     int iF, iRSSI;
 
     String status = "";
-    switch (WiFi.status()) {
-        case STATE_NOT_CONNECTED:
-            status = "N_CON";
-            break;
-        case STATE_SCANNING:
+    int iStatus = WiFi.status();
+    switch (iStatus) {
+        case STATE_SCAN_ONGOING:
             status = "SCAN";
             break;
-        case STATE_CONNECTING:
+        case STATE_WPS_START:
             status = "C_ING";
             break;
-        case STATE_CONNECTED:
+        case STATE_WPS_SUCCESS:
             status = "CONN";
             break;
         default:
-            status = "NO STATE";
+            char cStat[10];
+            sprintf(cStat,"Stat: %i", iStatus);
+            status = cStat;
     }
 
     iNodeID = nodeList.currentNode();

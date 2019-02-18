@@ -35,6 +35,7 @@ Forked/Updated 2017-2018 by Chris Brinton for the SensorIoT project
 #include <NtpClientLib.h>
 #include <ESPAsyncWebServer.h>
 #include <AsyncMqttClient.h>
+#include <JustWifi.h>
 #include "RFM69Manager.h"
 #include "FS.h"
 #include "NodeList.h"
