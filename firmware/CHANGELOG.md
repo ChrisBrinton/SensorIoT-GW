@@ -2,11 +2,23 @@
 
 ## [1.0.8] 2/18/2019
 ### Changed
- - Updated JustWifi lib to 2.0.2
+ - Updated JustWifi lib to 2.0.2 and refactored to support
+ - Updated backwards compatible libs to current versions:
+     - AsyncMqttClient@0.8.2
+     - ESPAsyncTCP@1.2.0
+     - ArduinoJson@5.13.4
+     - Adafruit GFX Library@b920674
+     - ES PAsync WebServer@1.2.0
+     - NtpClientLib@2.5.1
+     - Sparkfun BME280@2.0.4
+     - RFM69@ebf2cb86ff
  - Installation directions more complete
 ### Fixed
  - Updated platformio.ini to fix ESP Async WebServer and RFM69 lib defs
-
+ - Changed battery thresholds to be more accomodating to 1.5v battery ranges.
+### Added
+ - GW now retrieves nickname from server via MQTT and displays the shortname when available rather than ID:#
+ 
 ## [1.0.7] 1/10/2019
 ### Added
  - Completed support for http firmware upload for both FW and SPIFFS

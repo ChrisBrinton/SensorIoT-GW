@@ -1,3 +1,4 @@
+[![version](https://img.shields.io/badge/version-1.0.8-brightgreen.svg)](CHANGELOG.md)
 # The firmware for the SensorIoT GW
 
 The firmware is based on Xose Perez project [RFM69GW](https://bitbucket.org/xoseperez/rfm69gw) which has been modified to include a display as well as working with the SensorIoT App and server side.
@@ -26,8 +27,11 @@ You'll need to remove .piolibdeps\Time\Time.h. This error happens on windows due
 
 To deploy to your device you need to upload both the SPIFFS filesystem that contains the static web data and the initial settings, then the firmware code:
 
-    pio run --target uploadfs --node
-    pio run --target upload --node
+    pio run --target uploadfs
+    pio run --target upload
+
+
+
 
 
 

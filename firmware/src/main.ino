@@ -36,6 +36,7 @@ Forked/Updated 2017-2018 by Chris Brinton for the SensorIoT project
 #include <ESPAsyncWebServer.h>
 #include <AsyncMqttClient.h>
 #include <JustWifi.h>
+#include <ArduinoJson.h>
 #include "RFM69Manager.h"
 #include "FS.h"
 #include "NodeList.h"
@@ -48,6 +49,8 @@ struct _GDnode_t {
   String F = "";
   String H = "";
   String P = "";
+  String shortname = "";
+  String longname = "";
 };
 
 struct _node_t {
@@ -104,6 +107,65 @@ void clearCounts() {
 
 void sendSensorData() {
   sendNodeToMQTT(&nodeInfo[1]);
+}
+
+void getNicknames() {
+    
+    static bool nicknamesRequested = false;
+
+    if(!nicknamesRequested) {
+
+        // get command topic from config and replace placeholder strings
+        String commandTopic = getSetting("mqttCommandTopic", MQTT_COMMAND_TOPIC);
+        String tmpHN = String(getSetting("hostname", APP_NAME));
+        tmpHN.replace("_","/");
+        commandTopic.replace("{hostname}", tmpHN);
+
+        if ((WiFi.status() == WL_CONNECTED) && (mqttConnected())) {
+            nicknamesRequested = true;
+            mqttSend((char*)commandTopic.c_str(), (char*)"get_nicknames");
+            DEBUG_MSG("[DISPLAY] Nicknames requested via MQTT\n");
+        
+        } 
+    }
+}
+
+void setNickname(char* json) {
+    // Parse JSON input
+    const size_t capacity = JSON_OBJECT_SIZE(3)+60;
+    DynamicJsonBuffer jsonBuffer(capacity);;
+    JsonObject& root = jsonBuffer.parseObject(json);
+
+    if (!root.success()) {
+        DEBUG_MSG("[REPLY] Nickname reply not deserializable. Ignoring\n");
+        return;
+    }
+    int node_id = root["node_id"];
+    const char* shortname = root["shortname"];
+    const char* longname = root["longname"];
+    if(nodeInfo[node_id].THP == 0) {
+      nodeInfo[node_id].THP = new _GDnode_t;
+    }
+    nodeInfo[node_id].THP->shortname = shortname;
+    nodeInfo[node_id].THP->longname = longname;
+
+}
+
+void processCommandReply(char* topic, char* reply) {
+    String sTopic = topic;
+    String sReply = reply;
+
+    int index = sTopic.lastIndexOf('/') + 1;
+    String command = sTopic.substring(index, sTopic.length());
+    if(command == "get_nicknames") {
+        DEBUG_MSG("[REPLY] Processing get_nicknames command response\n");
+        setNickname(reply);
+    } else if (command == "get_config") {
+        DEBUG_MSG("[REPLY] Processing get_config command response\n");
+    } else {
+        DEBUG_MSG("[REPLY] Unrecognized command reply %s\n", command.c_str());
+    }
+
 }
 
 void processMessage(packet_t * data) {
@@ -241,6 +303,7 @@ void sendNodeToMQTT(_node_t * node) {
   mqttSend((char*) getTopicMapping(String(node->senderID), String("P")).c_str(), (char *) node->THP->P.c_str());
   mqttSend((char*) getTopicMapping(String(node->senderID), String("BAT")).c_str(), (char *) node->THP->BAT.c_str());
   mqttSend((char*) getTopicMapping(String(node->senderID), String("RSSI")).c_str(), (char *) node->THP->RSSI.c_str());
+
 }
 
 // -----------------------------------------------------------------------------
@@ -365,6 +428,8 @@ void loop() {
     sensorLoop();
     displayLoop();
     restartLoop();
+    getNicknames();
+
 
     yield();
 
