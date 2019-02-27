@@ -1,4 +1,4 @@
-/*
+ /*
 
 MQTT MODULE
 
@@ -8,6 +8,7 @@ Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
 
 #include <ESP8266WiFi.h>
 #include <AsyncMqttClient.h>
+#include "config/all.h"
 
 AsyncMqttClient mqtt;
 unsigned int connectTries = 0;
@@ -45,6 +46,13 @@ void _mqttOnConnect(bool sessionPresent) {
     // Say hello and report our IP and VERSION
     mqttSend((char *) sTopic.c_str(), (char *) getIP().c_str());
 
+    // Subscribe to the reply topic from the server at QoS 0 (0=almost once, 1=AtleastOnce, 2=ExactlyOnce)
+    String replyTopic = getSetting("mqttReplyTopic", MQTT_REPLY_TOPIC);
+    replyTopic.replace("{hostname}", tmpHN);
+    mqtt.subscribe(replyTopic.c_str(), 1);
+    DEBUG_MSG("[MQTT] subscribed to reply topic: %s\n", replyTopic.c_str());
+
+
 }
 
 void _mqttOnDisconnect(AsyncMqttClientDisconnectReason reason) {
@@ -53,6 +61,28 @@ void _mqttOnDisconnect(AsyncMqttClientDisconnectReason reason) {
     wsSend((char *) "{\"mqttStatus\": false}");
     DEBUG_MSG("[MQTT] Disconnected!!! Reason:%i\n", reason);
 
+}
+
+char* _returnVal;
+void _onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) {
+
+    //Complete messages may not arrive in a single call to _onMqttMessage(). We need to watch len, index and total to determine this
+    //if len != total then the message will arrive in pieces. We use index to determine which chunk of the message this piece is.
+    if(index==0) { //start of a new message
+        _returnVal = new char[total+1];
+    }
+    char* buff = _returnVal + index;
+    memcpy(buff, payload, len); //copy this chunk into place
+    if(index + len == total) { // this is the final chunk of this message, go ahead and process.
+        char* buff = _returnVal + total;
+        *buff = '\0';
+        DEBUG_MSG("[MQTT] Publish received. topic: %s payload: %s\n", topic, _returnVal);
+        DEBUG_MSG("[MQTT] qos: %i dup: %i retain: %i len: %i index: %i total: %i\n", properties.qos, properties.dup, properties.retain, len, index, total);
+
+        processCommandReply(topic, _returnVal);
+
+        free(_returnVal);
+    }
 }
 
 void mqttConnect() {
@@ -108,6 +138,7 @@ void mqttConnect() {
 void mqttSetup() {
     mqtt.onConnect(_mqttOnConnect);
     mqtt.onDisconnect(_mqttOnDisconnect);
+    mqtt.onMessage(_onMqttMessage);
 }
 
 void mqttLoop() {

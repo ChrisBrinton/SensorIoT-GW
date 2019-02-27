@@ -7,9 +7,11 @@
 #include <Fonts/FreeSans24pt7b.h>
 #include <Fonts/TomThumb.h>
 #include <Fonts/PicoPixel.h>
+#include <NtpClientLib.h>
 #include "Adafruit_SSD1306.h"
-#include "config/global.h"
-#include <JustWifi.h>
+
+
+
 //
 // Display module
 //
@@ -220,7 +222,13 @@ void buildNodeDisplayPage(int iYOffset){
   //ID
     iTmpX = 93;
     iTmpY = 6;
-    tempString = "ID: " + String(iNodeID);
+    String nickname = nodeInfo[nodeList.currentNode()].THP->shortname;
+    if(nickname.length() > 0) {
+        tempString = nickname;
+        iTmpX = 115 - nickname.length()*4;
+    } else {
+        tempString = "ID: " + String(iNodeID);
+    }
     display.setFont(&TomThumb);
     display.setCursor(iTmpX,iTmpY+iPageOffset);
     display.print(tempString.c_str());
@@ -326,21 +334,21 @@ void displayTestInfo(){
     int iF, iRSSI;
 
     String status = "";
-    switch (WiFi.status()) {
-        case STATE_NOT_CONNECTED:
-            status = "N_CON";
-            break;
-        case STATE_SCANNING:
+    int iStatus = WiFi.status();
+    switch (iStatus) {
+        case STATE_SCAN_ONGOING:
             status = "SCAN";
             break;
-        case STATE_CONNECTING:
+        case STATE_WPS_START:
             status = "C_ING";
             break;
-        case STATE_CONNECTED:
+        case STATE_WPS_SUCCESS:
             status = "CONN";
             break;
         default:
-            status = "NO STATE";
+            char cStat[10];
+            sprintf(cStat,"Stat: %i", iStatus);
+            status = cStat;
     }
 
     iNodeID = nodeList.currentNode();
@@ -369,6 +377,7 @@ void displaySetup () {
     display.setTextWrap(FALSE);
 
     displayStartupLogo();
+
 
 }
 
@@ -473,10 +482,7 @@ void maintainDisplayState() {
 
 }
 
-void displayLoop(){
-
-    maintainDisplayState();
-
+void doDisplay() {
     static int lastMillis = 0;
     int nowMillis = millis();
     if(nowMillis > (lastMillis + 2000)){
@@ -511,4 +517,13 @@ void displayLoop(){
                 break;
         }
     }
+}
+
+
+void displayLoop(){
+
+    maintainDisplayState();
+
+    doDisplay();
+
 }

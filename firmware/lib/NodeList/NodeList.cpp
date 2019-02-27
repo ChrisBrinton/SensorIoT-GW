@@ -26,7 +26,7 @@ NodeList::NodeList()
 // Returns true if the operation is successful.
 bool NodeList::insertNode(int newNode)
 {
-    DEBUG_MSG("NodeList::insertNode: %i\n", newNode);
+    //DEBUG_MSG("NodeList::insertNode: %i\n", newNode);
     if(listLength == 0){
       head->nodeID = newNode;
       listLength++;
@@ -54,7 +54,7 @@ bool NodeList::insertNode(int newNode)
 
 bool NodeList::nodeExists(int nodeID)
 {
-  DEBUG_MSG("NodeList::nodeExists: %i\n", nodeID);
+  //DEBUG_MSG("NodeList::nodeExists: %i\n", nodeID);
   node* p = head;
   node* q = head;
   while(q)

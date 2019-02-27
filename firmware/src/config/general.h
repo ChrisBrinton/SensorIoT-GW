@@ -42,7 +42,7 @@
 // -----------------------------------------------------------------------------
 
 #define MQTT_ENABLED            true
-#define MQTT_SERVER             "74.208.159.205"
+#define MQTT_SERVER             "brintontech.com" // aka "74.208.159.205"
 #define MQTT_PORT               1883
 #define MQTT_RETAIN             false
 #define MQTT_QOS                0
@@ -55,6 +55,16 @@
 #define MQTT_IP_TOPIC           "/{hostname}/ip/"
 #define MQTT_HEARTBEAT_TOPIC    "/{hostname}/ping/"
 #define MQTT_DEFAULT_TOPIC      "/{hostname}/{nodeid}/{key}"
+#define MQTT_REPLY_TOPIC        "/reply/{hostname}/#"
+#define MQTT_COMMAND_TOPIC      "/command/{hostname}"
+// -----------------------------------------------------------------------------
+// CONFIG SERVER
+// -----------------------------------------------------------------------------
+
+#define CSERV_HOST              "brintontech.com"
+#define CSERV_PORT              443
+#define CSERV_CERT    "40 B6 D1 3A 9C FC 0A FC 58 24 92 D9 19 66 8C 14 06 D8 F4 81"
+
 
 // -----------------------------------------------------------------------------
 // NTP
