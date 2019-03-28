@@ -72,14 +72,15 @@ All text above, and the splash screen must be included in any redistribution
 //   #define SSD1306_128_64
 //   #define SSD1306_128_32
 //   #define SSD1306_128_32DB
-#define SSD1305_128_32DB
+//   #define SSD1305_128_32DB
+#define SSD1305_128_32
 //   #define SSD1306_96_16
 /*=========================================================================*/
 
 #if defined SSD1306_128_64 && defined SSD1306_128_32
   #error "Only one SSD1306 display can be specified at once in SSD1306.h"
 #endif
-#if !defined SSD1306_128_64 && !defined SSD1306_128_32 && !defined SSD1306_96_16 && !defined SSD1306_128_32DB && !defined SSD1305_128_32DB
+#if !defined SSD1306_128_64 && !defined SSD1306_128_32 && !defined SSD1306_96_16 && !defined SSD1305_128_32 && !defined SSD1306_128_32DB && !defined SSD1305_128_32DB
   #error "At least one SSD1306 display must be specified in SSD1306.h"
 #endif
 
@@ -98,6 +99,12 @@ All text above, and the splash screen must be included in any redistribution
 #if defined SSD1305_128_32DB
   #define SSD1306_LCDWIDTH                  128
   #define SSD1306_LCDHEIGHT                 64
+  #define SSD1306_LCDINITHEIGHT             32
+#endif
+//Add def for 1305 with single buffered 32 line display - CB
+#if defined SSD1305_128_32
+  #define SSD1306_LCDWIDTH                  128
+  #define SSD1306_LCDHEIGHT                 32
   #define SSD1306_LCDINITHEIGHT             32
 #endif
 #if defined SSD1306_128_32
