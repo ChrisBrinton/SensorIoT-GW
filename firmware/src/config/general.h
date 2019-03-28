@@ -18,7 +18,7 @@
 #define SPI_CS                  2
 #define IRQ_PIN                 15
 #define RFM69_RST               16
-#define IS_RFM69HW              0
+#define IS_RFM69HW              1
 
 // -----------------------------------------------------------------------------
 // WIFI
@@ -38,10 +38,18 @@
 #define OTA_PORT                8266
 
 // -----------------------------------------------------------------------------
+// Display
+// -----------------------------------------------------------------------------
+
+#define DISPLAY_ALWAYS_ENABLED  "on"
+#define DISPLAY_ENABLE_TIME    "06:00"
+#define DISPLAY_DISABLE_TIME   "22:00"
+
+// -----------------------------------------------------------------------------
 // MQTT
 // -----------------------------------------------------------------------------
 
-#define MQTT_ENABLED            true
+#define MQTT_ENABLED            "on"
 #define MQTT_SERVER             "brintontech.com" // aka "74.208.159.205"
 #define MQTT_PORT               1883
 #define MQTT_RETAIN             false
@@ -64,7 +72,6 @@
 #define CSERV_HOST              "brintontech.com"
 #define CSERV_PORT              443
 #define CSERV_CERT    "40 B6 D1 3A 9C FC 0A FC 58 24 92 D9 19 66 8C 14 06 D8 F4 81"
-
 
 // -----------------------------------------------------------------------------
 // NTP
