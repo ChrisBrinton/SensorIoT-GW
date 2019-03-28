@@ -10,6 +10,7 @@ yarn-error.log
 .clang_complete
 .gcc-flags.json
 .piolibdeps
+data/
 
 #VSCode
 #
