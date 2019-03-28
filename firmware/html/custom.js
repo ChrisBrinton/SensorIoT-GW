@@ -5,6 +5,13 @@ var filters = [];
 
 function doUpdate() {
     var data = $("#formSave").serializeArray();
+
+    //check to see if any checkbox's are not checked, and if so, make them "off"
+    $('#formSave input:checkbox:not(:checked)').map(function() {
+        var obj = {name: this.name, value: "off"};
+        data.push(obj);
+    });  
+
     websock.send(JSON.stringify({'config': data}));
     $(".powExpected").val(0);
     return false;
@@ -162,7 +169,7 @@ function toggleMenu() {
 
 function processData(data) {
 
-    //console.log("WebSocket data received: ", data);
+    console.log("WebSocket data received: ", data);
 
     // title
     if ("app" in data) {
@@ -247,6 +254,16 @@ function processData(data) {
         }
         if (key == "mqttStatus") {
             data.mqttStatus = data.mqttStatus ? "CONNECTED" : "NOT CONNECTED";
+        }
+        if (key == "displayAlwaysEnabled") {
+            if(data.displayAlwaysEnabled == "off"){
+                delete data["displayAlwaysEnabled"];
+            }
+        }
+        if (key == "mqttEnabled") {
+            if(data.mqttEnabled == "off"){
+                delete data["mqttEnabled"];
+            }
         }
 
         // Look for INPUTs

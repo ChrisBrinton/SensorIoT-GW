@@ -45,6 +45,10 @@
                         </li>
 
                         <li class="pure-menu-item">
+                            <a href="#" class="pure-menu-link" data="panel-display">DISPLAY</a>
+                        </li>
+
+                        <li class="pure-menu-item">
                             <a href="#" class="pure-menu-link" data="panel-mqtt">MQTT</a>
                         </li>
 
@@ -219,6 +223,88 @@
 
                             </fieldset>
                         </div>
+                    </div>
+
+                    <div class="panel" id="panel-display">
+
+                        <div class="header">
+                            <h1>DISPLAY</h1>
+                            <h2>Manage settings related to the display.</h2>
+                        </div>
+
+                        <div class="page">
+
+                            <fieldset>
+
+                                <div class="checkbox-row pure-g">
+                                    <label class="pure-u-1 pure-u-md-1-4" for="displayAlwaysEnabled">Display Always On</label>
+                                    <input class="gd-checkbox" name="displayAlwaysEnabled" type="checkbox"/>
+                                </div>
+
+                                <div class="pure-g">
+                                    <label class="pure-u-1 pure-u-md-1-4" for="displayEnableTime">Enable Display Time</label>
+                                    <select class="pure-u-1 pure-u-md-1-8" name="displayEnableTime" tabindex="1">
+                                        <option>01:00</option>
+                                        <option>02:00</option>
+                                        <option>03:00</option>
+                                        <option>04:00</option>
+                                        <option>05:00</option>
+                                        <option>06:00</option>
+                                        <option>07:00</option>
+                                        <option>08:00</option>
+                                        <option>09:00</option>
+                                        <option>10:00</option>
+                                        <option>11:00</option>
+                                        <option>12:00</option>
+                                        <option>13:00</option>
+                                        <option>14:00</option>
+                                        <option>15:00</option>
+                                        <option>16:00</option>
+                                        <option>17:00</option>
+                                        <option>18:00</option>
+                                        <option>19:00</option>
+                                        <option>20:00</option>
+                                        <option>21:00</option>
+                                        <option>22:00</option>
+                                        <option>23:00</option>
+                                        <option>24:00</option>
+                                    </select>
+                                </div>
+
+                                <div class="pure-g">
+                                    <label class="pure-u-1 pure-u-md-1-4" for="displayDisableTime">Disable Display Time</label>
+                                    <select class="pure-u-1 pure-u-md-1-8" name="displayDisableTime" tabindex="2">
+                                            <option>01:00</option>
+                                            <option>02:00</option>
+                                            <option>03:00</option>
+                                            <option>04:00</option>
+                                            <option>05:00</option>
+                                            <option>06:00</option>
+                                            <option>07:00</option>
+                                            <option>08:00</option>
+                                            <option>09:00</option>
+                                            <option>10:00</option>
+                                            <option>11:00</option>
+                                            <option>12:00</option>
+                                            <option>13:00</option>
+                                            <option>14:00</option>
+                                            <option>15:00</option>
+                                            <option>16:00</option>
+                                            <option>17:00</option>
+                                            <option>18:00</option>
+                                            <option>19:00</option>
+                                            <option>20:00</option>
+                                            <option>21:00</option>
+                                            <option>22:00</option>
+                                            <option>23:00</option>
+                                            <option>24:00</option>
+                                    </select>                                
+                                </div>
+
+                            </fieldset>
+
+                        </div>
+
                     </div>
 
                     <div class="panel" id="panel-mqtt">

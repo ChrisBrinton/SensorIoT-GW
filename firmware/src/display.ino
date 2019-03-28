@@ -28,7 +28,8 @@ typedef enum {
     DISPLAY_STATE_WIFIINFO,
     DISPLAY_STATE_MESSAGE,
     DISPLAY_STATE_CONNECTED,
-    DISPLAY_STATE_TEST
+    DISPLAY_STATE_TEST,
+    DISPLAY_STATE_SLEEP
 } displayStates_t;
 
 struct _display_node_t {
@@ -104,7 +105,7 @@ void scrollUpDB(int numoflines){
     }
 }
 
-void BuildCurrentTimePage(int iYOffset) {
+void BuildCurrentTimePage(int iCenterOffset, int iYOffset) {
     bool timeDisplayTest = false;
     String timeString = "";
     String ampmString = "";
@@ -182,9 +183,7 @@ void BuildCurrentTimePage(int iYOffset) {
     //DEBUG_MSG("Width 1 %i Width 2 %i\n", total_w, w);
     total_w = total_w + w;
 
-    int center_offset = 17;
-    //offsetting the center gives us the room we need draw the node info to the right of the time.
-    centerx = ((SSD1306_LCDWIDTH - total_w - center_offset)/2)-iYOffset;
+    centerx = ((SSD1306_LCDWIDTH - total_w + iCenterOffset)/2)-iYOffset;
     display.setCursor(centerx,31);
     display.setFont(&FreeSans18pt7b);
     display.print(timeString.c_str());
@@ -193,7 +192,7 @@ void BuildCurrentTimePage(int iYOffset) {
 }
 
 
-void buildNodeDisplayPage(int iYOffset){
+void buildNodeDisplayPage(int iCenterOffset, int iYOffset){
     int16_t x1,y1,iTmpX,iTmpY;
     uint16_t w,h;
     uint8_t iNodeID;
@@ -220,42 +219,41 @@ void buildNodeDisplayPage(int iYOffset){
     iPageOffset = -1;
 
   //ID
-    iTmpX = 93;
     iTmpY = 6;
     String nickname = nodeInfo[nodeList.currentNode()].THP->shortname;
     if(nickname.length() > 0) {
         tempString = nickname;
-        iTmpX = 115 - nickname.length()*4;
+        iTmpX = 46 - nickname.length()*4 + iCenterOffset;
     } else {
         tempString = "ID: " + String(iNodeID);
+        iTmpX = 48 - tempString.length()*4 + iCenterOffset;
     }
     display.setFont(&TomThumb);
     display.setCursor(iTmpX,iTmpY+iPageOffset);
     display.print(tempString.c_str());
-
-  //Humidity
-    iTmpX=133;
-    iTmpY=22;
-    tempString = "H:" + String(iH);
-    display.getTextBounds((char*)tempString.c_str(),0,iTmpY+iPageOffset,&x1,&y1,&w,&h);
-    display.setCursor(iTmpX-w,iTmpY+iPageOffset);
-    display.print(tempString.c_str());
   //Temp
-    iTmpX = 125;
-    iTmpY = 14;
+    iTmpX = 57 + iCenterOffset;
+    iTmpY = 6;
     display.setFont(&TomThumb);
     tempString = String(iF);
     display.getTextBounds((char*)tempString.c_str(),0,iTmpY+iPageOffset,&x1,&y1,&w,&h);
     display.setCursor(iTmpX-w+4,iTmpY+iPageOffset);
     display.print(tempString.c_str());
-    iTmpX = iTmpX;
-    display.setCursor(iTmpX,iTmpY-2+iPageOffset);
+    display.setCursor(iTmpX,iTmpY-1+iPageOffset);
     tempString = "o";
     display.print(tempString.c_str());
+
+  //Humidity
+    iTmpX= 80 + iCenterOffset;
+    iTmpY=6;
+    tempString = "H:" + String(iH);
+    display.getTextBounds((char*)tempString.c_str(),0,iTmpY+iPageOffset,&x1,&y1,&w,&h);
+    display.setCursor(iTmpX-w,iTmpY+iPageOffset);
+    display.print(tempString.c_str());
+
   //RSSI (based on where temp ends)
-    display.getTextBounds((char*)tempString.c_str(),iTmpX,16+iPageOffset,&x1,&y1,&w,&h);
-    iTmpX = iTmpX + w + 0;
-    iTmpX = 122;
+    //display.getTextBounds((char*)tempString.c_str(),iTmpX,16+iPageOffset,&x1,&y1,&w,&h);
+    iTmpX = 83 + iCenterOffset;
     iTmpY = 1;
     if(iRSSI>-60){
         display.drawRect(iTmpX+iYOffset,iTmpY+iPageOffset,2,5,WHITE);
@@ -272,10 +270,10 @@ void buildNodeDisplayPage(int iYOffset){
 
     //Battery indicator
     //draw battery shape around indicator
-    iTmpX = 111;
-    iTmpY = 26;
-    display.drawRect(iTmpX+iYOffset,iTmpY+iPageOffset,12,7,WHITE);
-    display.drawRect(iTmpX+12+iYOffset,iTmpY+2+iPageOffset,1,3,WHITE);
+    iTmpX = 88 + iCenterOffset;
+    iTmpY = 1;
+    display.drawRect(iTmpX+iYOffset,iTmpY+iPageOffset,12,6,WHITE);
+    display.drawRect(iTmpX+12+iYOffset,iTmpY+2+iPageOffset,1,2,WHITE);
 
     float dBAT = atof(nodeInfo[nodeList.currentNode()].THP->BAT.c_str());
     int iBatLvl = 0;
@@ -296,13 +294,13 @@ void buildNodeDisplayPage(int iYOffset){
     }
 
     if(iBatLvl>2){
-        display.drawRect(iTmpX+8+iYOffset,iTmpY+2+iPageOffset,2,3,WHITE);
+        display.drawRect(iTmpX+8+iYOffset,iTmpY+2+iPageOffset,2,2,WHITE);
     }
     if(iBatLvl>1){
-        display.drawRect(iTmpX+5+iYOffset,iTmpY+2+iPageOffset,2,3,WHITE);
+        display.drawRect(iTmpX+5+iYOffset,iTmpY+2+iPageOffset,2,2,WHITE);
     }
     if(iBatLvl>0){
-        display.drawRect(iTmpX+2+iYOffset,iTmpY+2+iPageOffset,2,3,WHITE);
+        display.drawRect(iTmpX+2+iYOffset,iTmpY+2+iPageOffset,2,2,WHITE);
     }
 
 
@@ -311,20 +309,53 @@ void buildNodeDisplayPage(int iYOffset){
 
 //This should get called about every second or two
 void displayInfo(){
-    #if defined SSD1305_128_32DB //The SSD1305 displays are offset by 4 pixels
-        int iYOffset = 4;
-    #else
-        int iYOffset = 0;
+
+    int iYOffset = 0;
+    #if defined SSD1305_128_32DB || defined SSD1305_128_32//The SSD1305 displays are offset by 4 pixels
+        iYOffset = 4;
     #endif
 
-    memset(display.getBuffer(),0,512);
-    BuildCurrentTimePage(iYOffset);
+    int displayBuffSize = (SSD1306_LCDHEIGHT) * SSD1306_LCDWIDTH / 8;
+    memset(display.getBuffer(),0,displayBuffSize);
 
-    buildNodeDisplayPage(iYOffset);
+    BuildCurrentTimePage(getCurrentXOffset(), iYOffset);
+
+    buildNodeDisplayPage(getCurrentXOffset(), iYOffset);
 
     display.display();
 }
 
+int getCurrentXOffset() {
+    static int lastMin = 0;
+    static int iCenterOffset = 0;
+    int iOffsetUpperBound = 17;
+    int iOffsetLowerBound = -17;
+    static int iDirection = 1;
+
+    //only move the center offset one step every min.    
+    int nowMin = minute(now());
+    if(nowMin != lastMin){
+        lastMin = nowMin;
+    } else {
+        return iCenterOffset;
+    }
+    
+
+    if(iCenterOffset>iOffsetUpperBound){
+        iDirection = -1;
+    }
+    if(iCenterOffset<iOffsetLowerBound){
+        iDirection = 1;
+    }
+    
+    if(iDirection>0){
+        iCenterOffset++;
+    } else {
+        iCenterOffset--;
+    }
+
+    return iCenterOffset;
+}
 //If the gateway is in AP mode, display onboard sensor info and any packets recieved by
 //the radio. This will give a visual indictor on the screen that both the onboard sensor
 //and the radio are functioning.
@@ -369,19 +400,7 @@ void displayTestInfo(){
     nodeList.nextNode();
 }
 
-void displaySetup () {
-    display.begin(SSD1306_SWITCHCAPVCC);
-    display.setTextSize(1);
-    display.setTextColor(WHITE);
-    display.setCursor(0,0);
-    display.setTextWrap(FALSE);
-
-    displayStartupLogo();
-
-
-}
-
-void setDisplayState(displayStates_t newState, int secondsToHold = 0){
+void setDisplayState(displayStates_t newState, int secondsToHold = 0) {
     if(displayBufferIn == ((displayBufferOut -1 + DISPLAYBUFFERSIZE) % DISPLAYBUFFERSIZE)) {
       return; //queue is full, ignore the request
     }
@@ -396,7 +415,7 @@ void setDisplayState(displayStates_t newState, int secondsToHold = 0){
 
 //The display buffer is preloaded with the logo, so it just needs to be displayed
 //and held for a time.
-void displayStartupLogo(){
+void displayStartupLogo() {
   setDisplayState(DISPLAY_STATE_STARTUP, 5);
 }
 
@@ -408,11 +427,12 @@ void stageWifiInfo(char* descr, char* SSID, char* IP){
     setDisplayState(DISPLAY_STATE_WIFIINFO, 8);
 }
 
-void displayWifiInfo(){
+void displayWifiInfo() {
 
     display.clearDisplay();
     //clear the double buffer
-    memset(display.getBuffer(),0,1024);
+    int displayBuffSize = (SSD1306_LCDHEIGHT) * SSD1306_LCDWIDTH / 8;
+    memset(display.getBuffer(),0,displayBuffSize);
     display.setFont(&TomThumb);
     display.ssd1306_command(SSD1306_SETSTARTLINE);
     display.setCursor(0,7);
@@ -430,10 +450,11 @@ void stageDisplayMsg(char* msg) {
     setDisplayState(DISPLAY_STATE_MESSAGE, 8);
 }
 
-void displayMsg(){
+void displayMsg() {
     display.clearDisplay();
     //clear the double buffer
-    memset(display.getBuffer(),0,1024);
+    int displayBuffSize = (SSD1306_LCDHEIGHT) * SSD1306_LCDWIDTH / 8;
+    memset(display.getBuffer(),0,displayBuffSize);
     display.setFont(&TomThumb);
     display.ssd1306_command(SSD1306_SETSTARTLINE);
     display.setCursor(0,7);
@@ -441,10 +462,22 @@ void displayMsg(){
     display.display();
 }
 
+void displaySleep() {
+    display.ssd1306_command(SSD1306_DISPLAYOFF);
+}
 
 int getCurrentDisplayState() {
 
     displayStates_t returnVal = DISPLAY_STATE_NONE;
+
+    int displayEnableTime = atoi(String(getSetting("displayEnableTime",DISPLAY_ENABLE_TIME)).substring(0,2).c_str());
+    int displayDisableTime = atoi(String(getSetting("displayDisableTime",DISPLAY_DISABLE_TIME)).substring(0,2).c_str());
+    if(getSetting("displayAlwaysEnabled", DISPLAY_ALWAYS_ENABLED) == "off") {
+        if(hour(now()) >= displayDisableTime && hour(now()) < displayEnableTime) {
+            return DISPLAY_STATE_SLEEP;
+        }
+    }
+
     if(displayBufferIn != displayBufferOut){
         returnVal = displayStateBuffer[displayBufferOut].displayState;
     } else if (WiFi.status() == WL_CONNECTED){
@@ -484,10 +517,16 @@ void maintainDisplayState() {
 
 void doDisplay() {
     static int lastMillis = 0;
+    static int lastState = DISPLAY_STATE_NONE;
     int nowMillis = millis();
     if(nowMillis > (lastMillis + 2000)){
         lastMillis = nowMillis;
         int state = getCurrentDisplayState();
+        //DEBUG_MSG("hour is %i - getCurrentDisplayState returns %i\n", hour(now()), state);
+        if ((lastState == DISPLAY_STATE_SLEEP) && (state != DISPLAY_STATE_SLEEP)){
+            display.ssd1306_command(SSD1306_DISPLAYON);
+        }
+        lastState = state;
         switch (state) {
             case DISPLAY_STATE_STARTUP:
                 //DEBUG_MSG("[DISPLAY] DISPLAY_STATE_STARTUP\n");
@@ -512,6 +551,9 @@ void doDisplay() {
             case DISPLAY_STATE_NONE:
                 displayInfo();
                 break;
+            case DISPLAY_STATE_SLEEP:
+                displaySleep();
+                break;
             default:
                 displayInfo();
                 break;
@@ -519,6 +561,15 @@ void doDisplay() {
     }
 }
 
+void displaySetup () {
+    display.begin(SSD1306_SWITCHCAPVCC);
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+    display.setCursor(0,0);
+    display.setTextWrap(FALSE);
+
+    displayStartupLogo();
+}
 
 void displayLoop(){
 

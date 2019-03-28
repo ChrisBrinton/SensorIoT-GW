@@ -403,6 +403,11 @@ void setup() {
         setSetting("hostname", String() + getIdentifier());
         saveSettings();
     }
+    //ensure backwards compatibility
+    if(getSetting("mqttEnabled", MQTT_ENABLED) == "true") {
+        setSetting("mqttEnabled", "on");
+        saveSettings();
+    }
 
     wifiSetup();
     otaSetup();

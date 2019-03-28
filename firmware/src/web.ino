@@ -59,7 +59,6 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
         ws.text(client_id, "{\"message\": \"Error parsing data!\"}");
         return;
     }
-
     // Check actions
     if (root.containsKey("action")) {
 
@@ -85,7 +84,6 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
 
         bool dirty = false;
         bool dirtyMQTT = false;
-        bool mqttEnableFlag = false;
         unsigned int network = 0;
         unsigned int mappingCount = getSetting("mappingCount", "0").toInt();
         unsigned int mapping = 0;
@@ -119,31 +117,16 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
                 key = key + String(mapping);
                 ++mapping;
             }
-            if (key == "mqttEnabled") {
-              if (value == "on") {
-                DEBUG_MSG("[WEBSOCKET] Setting mqttEnableFlag to true\n");
-                mqttEnableFlag = true;
-              }
-            }
             if (value != getSetting(key)) {
                 setSetting(key, value);
                 DEBUG_MSG("[WEBSOCKET] Setting %s to %s\n", key.c_str(), value.c_str());
                 dirty = true;
-                if (key.startsWith("mqtt")) dirtyMQTT = true;
+                if (key.startsWith("mqtt")) {
+                    DEBUG_MSG("[WEBSOCKET] MQTT settings marked dirty\n");
+                    dirtyMQTT = true;
+                } 
             }
 
-        }
-
-        if((getSetting("mqttEnabled") != "false") && (mqttEnableFlag == false)){
-          setSetting("mqttEnabled","false");
-          DEBUG_MSG("[WEBSOCKET] Setting mqttEnabled to false\n");
-          dirty = true;
-        }
-
-        if((getSetting("mqttEnabled") != "true") && mqttEnableFlag) {
-          setSetting("mqttEnabled","true");
-          DEBUG_MSG("[WEBSOCKET] Setting mqttEnabled to true\n");
-          dirty = true;
         }
 
         // delete remaining mapping
@@ -159,6 +142,7 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
 
         // Save settings
         if (dirty) {
+            DEBUG_MSG("[WEBSOCKET] changes detected. Saving settings. Free heap: %d\n", ESP.getFreeHeap());
 
             saveSettings();
             wifiConfigure();
@@ -195,16 +179,14 @@ void _wsStart(uint32_t client_id) {
     root["app"] = app;
     root["hostname"] = getSetting("hostname", HOSTNAME);
     root["chipid"] = chipid;
-    DEBUG_MSG("[WEBSOCKET] Before mac\n");
     root["mac"] = WiFi.macAddress();
     root["device"] = String(DEVICE);
-    DEBUG_MSG("[WEBSOCKET] Before getNetwork\n");
     root["network"] = getNetwork();
-    DEBUG_MSG("[WEBSOCKET] Before getIP\n");
     root["ip"] = getIP();
-    DEBUG_MSG("[WEBSOCKET] Before mqttStatus\n");
+    root["displayAlwaysEnabled"] = getSetting("displayAlwaysEnabled", DISPLAY_ALWAYS_ENABLED);
+    root["displayEnableTime"] = getSetting("displayEnableTime", DISPLAY_ENABLE_TIME);
+    root["displayDisableTime"] = getSetting("displayDisableTime", DISPLAY_DISABLE_TIME);
     root["mqttStatus"] = mqttConnected();
-    DEBUG_MSG("[WEBSOCKET] Before mqttEnabled\n");
     root["mqttEnabled"] = getSetting("mqttEnabled", MQTT_ENABLED);
     root["mqttServer"] = getSetting("mqttServer", MQTT_SERVER);
     root["mqttPort"] = getSetting("mqttPort", String(MQTT_PORT));
