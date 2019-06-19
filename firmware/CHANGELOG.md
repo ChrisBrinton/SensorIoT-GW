@@ -1,13 +1,13 @@
 # SensorIoT-GW change log
 
-## [1.0.9] 3/21/2019
+## [1.0.9] 6/18/2019
 ### Changed
  - Reorganized main display code to move slowly side to side (1px/m) to wear OLED displays evenly.
  - Updated startup logo to SensorIoT
 ### Added
  - Display has optional shutdown hours, configurable in web config
 ### Fixed
- - Locked platformio core to 1.6.0 to resolve instability
+ - Locked platformio core to 2.0.4 to resolve instability
 
 ## [1.0.8] 2/18/2019
 ### Changed
