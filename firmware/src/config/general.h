@@ -2,7 +2,7 @@
 // GENERAL
 //------------------------------------------------------------------------------
 
-#define SERIAL_BAUDRATE         115200
+#define SERIAL_BAUDRATE         74880
 #define LED_PIN                 0
 
 //------------------------------------------------------------------------------
@@ -11,14 +11,14 @@
 
 #define NODEID                  1
 #define GATEWAYID               1
-#define NETWORKID               100
-#define PROMISCUOUS             0
-#define FREQUENCY               RF69_915MHZ
+#define FREQUENCY               915
 #define ENCRYPTKEY              "sampleEncryptKey"
-#define SPI_CS                  2
-#define IRQ_PIN                 15
-#define RFM69_RST               16
-#define IS_RFM69HW              1
+#define RADIO_SPI_CS            2
+#define RADIO_IRQ_PIN           15
+#define RADIO_RST               16
+//#define IS_RF95                 1   //Use for RF95/96/97/98
+//#define IS_RF69                 1   //Use for RFM69
+#define IS_RF69HCW             1   //Use only for RFM69HCW 
 
 // -----------------------------------------------------------------------------
 // WIFI

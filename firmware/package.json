@@ -14,5 +14,7 @@
     "gulp-inline": "^0.1.1",
     "gulp-uglify": "^1.5.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
 }
