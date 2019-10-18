@@ -43,19 +43,28 @@ void radioSetup() {
     delay(10);
     digitalWrite(RADIO_RST, HIGH);
     delay(10);
-//    pinMode(RADIO_RST, INPUT);
+
+    radio.initialize(FREQUENCY, NODEID, ENCRYPTKEY, GATEWAYID);
+    driver.setFrequency(FREQUENCY);
+    driver.setModemConfig(RF95_CONFIG);
+    driver.setTxPower(RF95_POWER,false);
+    radio.setRetries(0); //There isnt much point in retrying since the nodes go to sleep very quickly
 #endif
 #if defined (IS_RF69) || defined (IS_RF69HCW)
-    // Hard Reset the RFM module
+    // Hard Reset the RFM69 module
     pinMode(RADIO_RST, OUTPUT);
     digitalWrite(RADIO_RST, HIGH);
     delay(100);
     digitalWrite(RADIO_RST, LOW);
     delay(100);
-#endif
-
     radio.initialize(FREQUENCY, NODEID, ENCRYPTKEY, GATEWAYID);
     driver.setFrequency(FREQUENCY);
+    //driver.setModemConfig(RF69HCW_CONFIG);
+    driver.setTxPower(RF69HCW_POWER,true);
+    radio.setRetries(0); //There isnt much point in retrying since the nodes go to sleep very quickly
+#endif
+
+    radio.setTimeout(ACK_TIMEOUT);
     radio.onMessage(processMessage);
     #if RADIO_DEBUG
         DEBUG_MSG("[RADIO] Working at %d Mhz\n", FREQUENCY);
@@ -66,6 +75,15 @@ void radioSetup() {
         } else {
             DEBUG_MSG("[RADIO] This node is not a gateway\n");
         }
+        #if defined (IS_RF69)
+            DEBUG_MSG("[RADIO] RF69 Radio active\n");
+        #endif
+        #if defined (IS_RF69HCW)
+            DEBUG_MSG("[RADIO] RF69HCW Radio active\n");
+        #endif
+        #if defined (IS_RF95)
+            DEBUG_MSG("[RADIO] RF95 LoRa Radio active\n");
+        #endif
     #endif
 
 }

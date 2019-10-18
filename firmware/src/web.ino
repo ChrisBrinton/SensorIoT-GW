@@ -186,6 +186,8 @@ void _wsStart(uint32_t client_id) {
     root["displayAlwaysEnabled"] = getSetting("displayAlwaysEnabled", DISPLAY_ALWAYS_ENABLED);
     root["displayEnableTime"] = getSetting("displayEnableTime", DISPLAY_ENABLE_TIME);
     root["displayDisableTime"] = getSetting("displayDisableTime", DISPLAY_DISABLE_TIME);
+    root["displayBrightnessAutoScale"] = getSetting("displayBrightnessAutoScale", DISPLAY_AUTO_BRIGHTNESS);
+    root["displayBrightnessRange"] = getSetting("displayBrightnessRange", DISPLAY_BRIGHTNESS_RANGE);
     root["mqttStatus"] = mqttConnected();
     root["mqttEnabled"] = getSetting("mqttEnabled", MQTT_ENABLED);
     root["mqttServer"] = getSetting("mqttServer", MQTT_SERVER);

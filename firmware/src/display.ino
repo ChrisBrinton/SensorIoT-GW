@@ -1,4 +1,5 @@
 #include <SPI.h>
+#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSans12pt7b.h>
@@ -203,13 +204,13 @@ void buildNodeDisplayPage(int iCenterOffset, int iYOffset){
     //if the day has rolled since the last update time then the age can return a neg number
     //its probably healthy to clear out the list daily, so clear it for any neg return val.
     //Dont bother to check node SENSORID as thats the onboard sensor
-    if(iNodeID != SENSORID) {
+    if(iNodeID && (iNodeID != SENSORID)) {
         int age = nodeList.getNodeUpdateAge(iNodeID);
         //DEBUG_MSG("Node %i is %i min old\n", iNodeID, age);
         if (age > 60 || age < 0){
           DEBUG_MSG("Node ID: %i is %i min old. Deleting\n", iNodeID, age);
           nodeList.deleteNode(iNodeID);
-        }
+        } 
     }
 
     iF = int(atof(nodeInfo[nodeList.currentNode()].THP->F.c_str())+.49);
@@ -561,6 +562,39 @@ void doDisplay() {
     }
 }
 
+void doBrightness() {
+    static int lastMillis = 0;
+    static int lastState = DISPLAY_STATE_NONE;
+    int nowMillis = millis();
+    if(nowMillis > (lastMillis + 4000)){
+        lastMillis = nowMillis;
+        byte potError;
+        byte potVal;
+        Wire.beginTransmission(0x2F);
+
+        if(getSetting("displayBrightnessAutoScale", DISPLAY_AUTO_BRIGHTNESS) == "off") {
+            potVal = atoi(getSetting("displayBrightnessRange", DISPLAY_BRIGHTNESS_RANGE).c_str())*1.3;
+        } else {
+            potVal = getAvgLight()*atoi(getSetting("displayBrightnessRange", DISPLAY_BRIGHTNESS_RANGE).c_str())*.01875;
+        }
+        if(potVal>DISPLAY_MAX_BRIGHTNESS)
+          potVal = DISPLAY_MAX_BRIGHTNESS;
+        Wire.write(potVal);
+
+        potError = Wire.endTransmission();
+        if (potError == 0) {
+            static byte lastPotVal;
+            if(potVal != lastPotVal) {
+                lastPotVal = potVal;
+                byte per = ((double)potVal/(double)DISPLAY_MAX_BRIGHTNESS)*100;
+                DEBUG_MSG("[DISPLAY] Set display brightness to 0X%X - %i%% - AvgLight: %4.1f\n", potVal, per, getAvgLight());
+            }
+        } else {
+            DEBUG_MSG("[DISPLAY] Failed to set display brightness\n");
+        }
+    }
+}
+
 void displaySetup () {
     display.begin(SSD1306_SWITCHCAPVCC);
     display.setTextSize(1);
@@ -576,5 +610,7 @@ void displayLoop(){
     maintainDisplayState();
 
     doDisplay();
+
+    doBrightness();
 
 }

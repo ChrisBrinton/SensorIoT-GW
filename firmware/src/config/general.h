@@ -16,10 +16,14 @@
 #define RADIO_SPI_CS            2
 #define RADIO_IRQ_PIN           15
 #define RADIO_RST               16
-//#define IS_RF95                 1   //Use for RF95/96/97/98
+#define IS_RF95                 1   //Use for RF95/96/97/98
 //#define IS_RF69                 1   //Use for RFM69
-#define IS_RF69HCW             1   //Use only for RFM69HCW 
-
+//#define IS_RF69HCW             1   //Use only for RFM69HCW
+#define ACK_TIMEOUT             500 //millis to wait for an ack
+#define RF95_POWER              20  //RF95s allow power to be set between 5 and 23
+#define RF69HCW_POWER           20  //RF69HCSs allow power to be set between -2 and 20
+#define RF95_CONFIG             RH_RF95::Bw125Cr45Sf128 //see RH_RF95.h for other options
+#define RF69HCW_CONFIG          RH_RF69::OOK_Rb1Bw1 //see RH_RF69.h for other options
 // -----------------------------------------------------------------------------
 // WIFI
 // -----------------------------------------------------------------------------
@@ -41,9 +45,12 @@
 // Display
 // -----------------------------------------------------------------------------
 
-#define DISPLAY_ALWAYS_ENABLED  "on"
-#define DISPLAY_ENABLE_TIME    "06:00"
-#define DISPLAY_DISABLE_TIME   "22:00"
+#define DISPLAY_ALWAYS_ENABLED      "on"
+#define DISPLAY_ENABLE_TIME         "06:00"
+#define DISPLAY_DISABLE_TIME        "22:00"
+#define DISPLAY_MAX_BRIGHTNESS      0x4F
+#define DISPLAY_BRIGHTNESS_RANGE    25
+#define DISPLAY_AUTO_BRIGHTNESS     "on"
 
 // -----------------------------------------------------------------------------
 // MQTT
@@ -92,6 +99,15 @@
 #define BME280_FILTER           0
 #define BME280_STANDBY          0
 #define SENSORID                1
+
+// -----------------------------------------------------------------------------
+// Onboard LTR-329 (Ambient Light) Sensor
+// -----------------------------------------------------------------------------
+
+#define LTR329_GAIN             1 //Set gain to 2x
+#define LTR329_INT_TIME         3 //400ms
+#define LTR329_MEAS_RATE        5 //2000ms
+#define LTR329_ROLLING_AVG_SIZE 10
 
 // -----------------------------------------------------------------------------
 // DEFAULTS

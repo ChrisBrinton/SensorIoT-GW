@@ -6,7 +6,7 @@ Radio Manager for SensorIoT-GW
 
 Based on sample code by Felix Rusu - http://LowPowerLab.com/contact
 Copyright (C) 2016 by Xose Pérez <xose dot perez at gmail dot com>
-Converted to use RadioHead library by Chris Brinton
+Converted to use RadioHead library by Chris Brinton 2019
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -75,9 +75,10 @@ bool RadioHeadManager::loop() {
         uint8_t length=RH_RF95_MAX_MESSAGE_LEN;
         uint8_t targetID = _gatewayID;
         int16_t rssi = _driver.lastRssi();
-        if(rssi < _targetRSSI - 5) {
+        strcpy(returnMsg,"NOP");
+        if(rssi < (_targetRSSI - 5)) {
             strcpy(returnMsg,"TXPWR_UP");
-        } else if (rssi > _targetRSSI + 5) {
+        } else if (rssi > (_targetRSSI + 5)) {
             strcpy(returnMsg,"TXPWR_DN");
         }
         //DEBUG_MSG("[MESSAGE] buffer available len: %i max: %i\n", length, RH_RF95_MAX_MESSAGE_LEN);
@@ -130,10 +131,11 @@ bool RadioHeadManager::loop() {
 
             }
                   // Send a reply back to the originator client
+            DEBUG_MSG("[MESSAGE] Sending control msg: %s to node: %i\n", returnMsg, senderID);
             if (!sendtoWait((uint8_t *)returnMsg, sizeof(returnMsg), senderID)) {
-                DEBUG_MSG("[MESSAGE] sendtoWait failed. returnMsg: %s\n", returnMsg);
+                DEBUG_MSG("[MESSAGE] Failed to send msg to node\n");
             } else {
-                DEBUG_MSG("[MESSAGE] Control msg sent to Node: %i - msg: %s\n", senderID, returnMsg);
+                DEBUG_MSG("[MESSAGE] Control msg sent successfully. Target RSSI: %i\n", _targetRSSI);
             }
         }
     }

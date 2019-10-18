@@ -140,6 +140,10 @@ function doUploadFileChange(event) {
     }
 };
 
+function doSliderUpdate() {
+    document.getElementById("brightnessValue").innerHTML = "(" + document.getElementById("brightnessRange").value +"%)";
+}
+
 function showPanel() {
     $(".panel").hide();
     $("#" + $(this).attr("data")).show();
@@ -260,10 +264,18 @@ function processData(data) {
                 delete data["displayAlwaysEnabled"];
             }
         }
+        if (key == "displayBrightnessAutoScale") {
+            if(data.displayBrightnessAutoScale == "off"){
+                delete data["displayBrightnessAutoScale"];
+            }
+        }
         if (key == "mqttEnabled") {
             if(data.mqttEnabled == "off"){
                 delete data["mqttEnabled"];
             }
+        }
+        if (key == "displayBrightnessRange") {
+            document.getElementById("brightnessValue").innerHTML = "(" + data.displayBrightnessRange +"%)";
         }
 
         // Look for INPUTs
@@ -337,7 +349,7 @@ function init() {
     $(".button-update-firmware").on("click", doUpdateFirmware);
     $(".choose-firmware-file").on("change", doUploadFileChange)
     //document.getElementById("firmwareUpdateFile").addEventListener("change", doUploadFileChange(event));
-
+    $(".gd-slider-range").on("input", doSliderUpdate);
     messages = $('#messages').DataTable({
         "paging": false
     });

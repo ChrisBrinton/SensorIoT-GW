@@ -9,7 +9,7 @@ yarn-error.log
 .pioenvs
 .clang_complete
 .gcc-flags.json
-.piolibdeps
+.pio
 data/
 
 #VSCode
