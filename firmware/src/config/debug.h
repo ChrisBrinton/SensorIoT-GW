@@ -3,4 +3,4 @@
 #else
     #define DEBUG_MSG(...)
 #endif
-#define DEBUG_NTPCLIENT
+

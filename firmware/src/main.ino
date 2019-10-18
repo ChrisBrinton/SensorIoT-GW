@@ -1,12 +1,10 @@
 /*
 
-ESP69GW
+SensorIoT-GW
 MAIN MODULE
 
-ESP8266 to RFM69 Gateway
+ESP8266 based wifi to radio Gateway
 Gateway code with suport for ESP8266-based boards
-
-Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +19,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+Based on the RFM69GW project by Xose Perez
+
+Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
+
 Forked/Updated 2017-2018 by Chris Brinton for the SensorIoT project
 
 */
@@ -31,13 +33,12 @@ Forked/Updated 2017-2018 by Chris Brinton for the SensorIoT project
 // -----------------------------------------------------------------------------
 // Prototypes
 // -----------------------------------------------------------------------------
-
 #include <NtpClientLib.h>
 #include <ESPAsyncWebServer.h>
 #include <AsyncMqttClient.h>
 #include <JustWifi.h>
 #include <ArduinoJson.h>
-#include "RFM69Manager.h"
+#include "RadioHeadManager.h"
 #include "FS.h"
 #include "NodeList.h"
 template<typename T> String getSetting(const String& key, T defaultValue);
@@ -181,12 +182,14 @@ void processMessage(packet_t * data) {
         data->rssi
     );
 
+    DEBUG_MSG("[MESSAGE] processing %d pairs\n", data->pairCount);
     for (uint8_t i=0;i<data->pairCount;i++){
       DEBUG_MSG("[MESSAGE] name: %s value: %s\n", data->pairs[i].name, data->pairs[i].value);
     }
 
     // Detect duplicates and missing packets
     // packetID==0 means device is not sending packetID info
+    //DEBUG_MSG("[MESSAGE] checking for dups and gaps\n");
     if (data->packetID > 0) {
         if (nodeInfo[data->senderID].count > 0) {
 
@@ -206,6 +209,7 @@ void processMessage(packet_t * data) {
 
     }
 
+    //DEBUG_MSG("[MESSAGE] Packaging into nodeInfo\n");
     nodeInfo[data->senderID].lastPacketID = data->packetID;
     nodeInfo[data->senderID].count = nodeInfo[data->senderID].count + 1;
     nodeInfo[data->senderID].senderID = data->senderID;
@@ -221,11 +225,12 @@ void processMessage(packet_t * data) {
     if(!nodeList.nodeExists(data->senderID)){
       nodeList.insertNode(data->senderID);
     }
-    DEBUG_MSG("\n");
+    //DEBUG_MSG("[MESSAGE] nodeInfo created\n");
 
     //Set the time that we got the message. If it goes too long without another update, the diplay routing will clear is out.
     nodeList.setUpdateTime(data->senderID, time(NULL));
 
+    //DEBUG_MSG("[MESSAGE] putting name-value pairs into nodeInfo\n");
     for (uint8_t j=0;j<data->pairCount;j++) {
         if(strncmp(data->pairs[j].name,"F",1) == 0){
         nodeInfo[data->senderID].THP->F = data->pairs[j].value;
@@ -242,16 +247,16 @@ void processMessage(packet_t * data) {
 
         // Send info to websocket clients
         char buffer[150];
-        /*
-        DEBUG_MSG("SenderID: %u\n", data->senderID);
-        DEBUG_MSG("TargetID: %u\n", data->targetID);
-        DEBUG_MSG("PacketID: %u\n", data->packetID);
-        DEBUG_MSG("Name: %s\n", data->pairs[j].name);
-        DEBUG_MSG("Value: %s\n", data->pairs[j].value);
-        DEBUG_MSG("RSSI: %d\n", data->rssi);
-        DEBUG_MSG("Dups: %u\n", nodeInfo[data->senderID].duplicates);
-        DEBUG_MSG("Missing: %u\n", nodeInfo[data->senderID].missing);
-        */
+        
+        //DEBUG_MSG("SenderID: %u\n", data->senderID);
+        //DEBUG_MSG("TargetID: %u\n", data->targetID);
+        //DEBUG_MSG("PacketID: %u\n", data->packetID);
+        //DEBUG_MSG("Name: %s\n", data->pairs[j].name);
+        //DEBUG_MSG("Value: %s\n", data->pairs[j].value);
+        //DEBUG_MSG("RSSI: %d\n", data->rssi);
+        //DEBUG_MSG("Dups: %u\n", nodeInfo[data->senderID].duplicates);
+        //DEBUG_MSG("Missing: %u\n", nodeInfo[data->senderID].missing);
+        
         sprintf_P(
             buffer,
             PSTR("{\"packet\": {\"senderID\": %u, \"targetID\": %u, \"packetID\": %u, \"name\": \"%s\", \"value\": \"%s\", \"rssi\": %d, \"duplicates\": %u, \"missing\": %u}}"),
@@ -313,6 +318,8 @@ void sendNodeToMQTT(_node_t * node) {
 void hardwareSetup() {
 	
     Serial.begin(SERIAL_BAUDRATE);
+    while(!Serial);
+
     SPIFFS.begin();
     pinMode(LED_PIN, OUTPUT);
     ledOff();
@@ -393,6 +400,7 @@ void setRestartCountdown(int counter) {
 // -----------------------------------------------------------------------------
 
 void setup() {
+    
 
     hardwareSetup();
 
@@ -403,10 +411,16 @@ void setup() {
         setSetting("hostname", String() + getIdentifier());
         saveSettings();
     }
+    //ensure backwards compatibility
+    if(getSetting("mqttEnabled", MQTT_ENABLED) == "true") {
+        setSetting("mqttEnabled", "on");
+        saveSettings();
+    }
 
     wifiSetup();
     otaSetup();
     mqttSetup();
+    
     radioSetup();
     webSetup();
     ntpSetup();

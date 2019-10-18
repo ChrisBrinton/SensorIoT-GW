@@ -97,6 +97,7 @@ void mqttConnect() {
                 stageDisplayMsg((char*)"MQTT Connect failed. Restarting");
                 wifiDisconnect();
                 connectTries = 0;
+                setRestartCountdown(15);
                 return;
             }
         } else {
@@ -110,24 +111,30 @@ void mqttConnect() {
         String port = getSetting("mqttPort", String(MQTT_PORT));
         String user = getSetting("mqttUser");
         String pass = getSetting("mqttPassword");
-
+    
 		if (host.length() == 0) return;
 
-        DEBUG_MSG("[MQTT] Connecting to broker at %s:%s", (char *) host.c_str(), (char *) port.c_str());
+        DEBUG_MSG("[MQTT] Connecting to broker at %s:%s ", (char *) host.c_str(), (char *) port.c_str());
+        //The AsyncMQTT lib doesnt make a copy of the clientID we pass it. To insure that it doesnt
+        //change before the connect packet containing the clientID (which happens asynchronousely, duh) is sent,
+        //create its own static copy of the string. And yes, that was happening.
+        static char* clientID = (char*)malloc(strlen(getSetting("hostname", APP_NAME).c_str()));
+        strcpy(clientID, getSetting("hostname", APP_NAME).c_str());
+        mqtt.setClientId(clientID);
 
         mqtt.setServer(host.c_str(), port.toInt());
-        mqtt
-            .setKeepAlive(MQTT_KEEPALIVE)
-            .setCleanSession(false)
+        mqtt.setKeepAlive(MQTT_KEEPALIVE);
+        mqtt.setCleanSession(false);
             //.setWill("topic/online", 2, true, "no")
-            .setClientId(getSetting("hostname", HOSTNAME).c_str());
 
         if ((user != "") & (pass != "")) {
-            DEBUG_MSG(" as user %s with pass |%s|\n", (char *) user.c_str(), (char *) pass.c_str());
+            DEBUG_MSG(" as user %s with pass |%s|", (char *) user.c_str(), (char *) pass.c_str());
             mqtt.setCredentials(user.c_str(), pass.c_str());
         } else {
-            DEBUG_MSG(" anonymously\n");
+            DEBUG_MSG("anonymously");
         }
+
+        DEBUG_MSG(" with ClientID %s\n", clientID);
 
         mqtt.connect();
 
@@ -136,15 +143,20 @@ void mqttConnect() {
 }
 
 void mqttSetup() {
-    mqtt.onConnect(_mqttOnConnect);
-    mqtt.onDisconnect(_mqttOnDisconnect);
-    mqtt.onMessage(_onMqttMessage);
+    if(getSetting("mqttEnabled", MQTT_ENABLED) == "on") {
+        mqtt.onConnect(_mqttOnConnect);
+        mqtt.onDisconnect(_mqttOnDisconnect);
+        mqtt.onMessage(_onMqttMessage);
+    } else
+    {
+        DEBUG_MSG("[MQTT] MQTT disabled\n");
+    }
 }
 
 void mqttLoop() {
 
     static unsigned long lastPeriod = 0;
-    if(getSetting("mqttEnabled", MQTT_ENABLED) == "true") {
+    if(getSetting("mqttEnabled", MQTT_ENABLED) == "on") {
       if (WiFi.status() == WL_CONNECTED) {
         if (WiFi.getMode() != WIFI_AP) {
           if (!mqtt.connected()) {

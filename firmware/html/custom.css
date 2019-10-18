@@ -92,7 +92,17 @@
 .gd-checkbox {
     height: 20px;
     width: 20px;
+    margin-top: 8px;
 }
+.gd-brightness-value {
+    margin: 11px;
+}
+.gd-slider-range {
+    margin-top: 11px;
+}
+.slider-row {
+    align-items: center;
+}  
 .pure-g {
     margin-bottom: 20px;
 }

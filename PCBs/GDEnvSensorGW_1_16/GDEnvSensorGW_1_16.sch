@@ -4944,86 +4944,6 @@ KEMET V / EIA 7343-20, KEMET X / EIA 7343-43 Wafe solder</description>
 <rectangle x1="0.7" y1="0.85" x2="1.2" y2="1.5" layer="51"/>
 <rectangle x1="-1.2" y1="0.85" x2="-0.7" y2="1.5" layer="51"/>
 </package>
-<package name="ZX62D-B-5PA8">
-<description>&lt;b&gt;Micro USB Type B Connector&lt;/b&gt; - Standard, Shell Through Hole&lt;br&gt;
-&lt;br&gt;
-Source: &lt;a href="http://www.hirose.co.jp/cataloge_hp/ed_ZX_20140804.pdf"&gt;http://www.hirose.co.jp/cataloge_hp/ed_ZX_20140804.pdf&lt;/a&gt;</description>
-<wire x1="5" y1="1.4" x2="5" y2="-1.4" width="0.1524" layer="51"/>
-<pad name="S1" x="2.15" y="-3.6" drill="1.5"/>
-<pad name="S2" x="2.15" y="3.6" drill="1.5"/>
-<smd name="1" x="4.825" y="1.3" dx="1.35" dy="0.4" layer="1" stop="no"/>
-<smd name="2" x="4.825" y="0.65" dx="1.35" dy="0.4" layer="1" stop="no"/>
-<smd name="3" x="4.825" y="0" dx="1.35" dy="0.4" layer="1" stop="no"/>
-<smd name="4" x="4.825" y="-0.65" dx="1.35" dy="0.4" layer="1" stop="no"/>
-<smd name="5" x="4.825" y="-1.3" dx="1.35" dy="0.4" layer="1" stop="no"/>
-<text x="1.27" y="5.08" size="1.27" layer="25">&gt;NAME</text>
-<text x="1.27" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
-<rectangle x1="4.1" y1="1.05" x2="5.55" y2="1.55" layer="29"/>
-<pad name="S3" x="5.05" y="2.425" drill="0.7" shape="long"/>
-<pad name="S4" x="5.05" y="-2.425" drill="0.7" shape="long"/>
-<rectangle x1="4.1" y1="0.4" x2="5.55" y2="0.9" layer="29"/>
-<rectangle x1="4.1" y1="-0.25" x2="5.55" y2="0.25" layer="29"/>
-<rectangle x1="4.1" y1="-0.9" x2="5.55" y2="-0.4" layer="29"/>
-<rectangle x1="4.1" y1="-1.55" x2="5.55" y2="-1.05" layer="29"/>
-<wire x1="-0.5" y1="4" x2="-0.6" y2="3.8" width="0.1524" layer="21"/>
-<wire x1="-0.6" y1="3.8" x2="0" y2="3.5" width="0.1524" layer="21"/>
-<wire x1="0" y1="3.5" x2="0" y2="3.1" width="0.1524" layer="21"/>
-<wire x1="0" y1="3.1" x2="-0.6" y2="3.1" width="0.1524" layer="21"/>
-<wire x1="-0.6" y1="3.1" x2="-0.6" y2="-3.1" width="0.1524" layer="21"/>
-<wire x1="-0.6" y1="-3.1" x2="0" y2="-3.1" width="0.1524" layer="21"/>
-<wire x1="0" y1="-3.1" x2="0" y2="-3.5" width="0.1524" layer="21"/>
-<wire x1="0" y1="-3.5" x2="-0.6" y2="-3.8" width="0.1524" layer="21"/>
-<wire x1="-0.6" y1="-3.8" x2="-0.5" y2="-4" width="0.1524" layer="21"/>
-<wire x1="-0.5" y1="-4" x2="0" y2="-3.75" width="0.1524" layer="21"/>
-<wire x1="0" y1="-3.75" x2="5" y2="-3.75" width="0.1524" layer="21"/>
-<wire x1="5" y1="-3.75" x2="5" y2="-3.16" width="0.1524" layer="21"/>
-<wire x1="-0.5" y1="4" x2="0" y2="3.75" width="0.1524" layer="21"/>
-<wire x1="0" y1="3.75" x2="5" y2="3.75" width="0.1524" layer="21"/>
-<wire x1="5" y1="3.75" x2="5" y2="3.16" width="0.1524" layer="21"/>
-<rectangle x1="0" y1="-3.75" x2="1.4" y2="3.75" layer="41"/>
-<rectangle x1="1.4" y1="-2.85" x2="2.9" y2="2.85" layer="41"/>
-<rectangle x1="2.9" y1="-3.75" x2="4.1" y2="3.75" layer="41"/>
-<wire x1="4.02" y1="1.4" x2="5" y2="1.4" width="0.1524" layer="51"/>
-<wire x1="4.02" y1="-1.4" x2="5" y2="-1.4" width="0.1524" layer="51"/>
-<wire x1="3.8" y1="1.4" x2="3.8" y2="2.19" width="0.1524" layer="21"/>
-<wire x1="3.8" y1="2.66" x2="3.8" y2="2.8" width="0.1524" layer="21"/>
-<wire x1="3.8" y1="-2.8" x2="3.8" y2="-2.66" width="0.1524" layer="21"/>
-<wire x1="3.8" y1="-2.19" x2="3.8" y2="-1.4" width="0.1524" layer="21"/>
-<wire x1="3.8" y1="2.8" x2="3.86" y2="2.8" width="0.1524" layer="21"/>
-<wire x1="3.8" y1="-2.8" x2="3.86" y2="-2.8" width="0.1524" layer="21"/>
-<wire x1="3.8" y1="1.4" x2="4.02" y2="1.4" width="0.1524" layer="21"/>
-<wire x1="3.8" y1="-1.4" x2="4.02" y2="-1.4" width="0.1524" layer="21"/>
-<wire x1="4.4" y1="1.9" x2="4.4" y2="2.8" width="0.1524" layer="51"/>
-<wire x1="4.4" y1="-2.8" x2="4.4" y2="-1.9" width="0.1524" layer="51"/>
-<wire x1="4.4" y1="-1.9" x2="5" y2="-1.9" width="0.1524" layer="51"/>
-<wire x1="4.4" y1="1.9" x2="5" y2="1.9" width="0.1524" layer="51"/>
-<wire x1="5" y1="1.9" x2="5" y2="3.16" width="0.1524" layer="51"/>
-<wire x1="5" y1="-3.16" x2="5" y2="-1.9" width="0.1524" layer="51"/>
-<wire x1="0.9" y1="2.8" x2="0.9" y2="1.9" width="0.1524" layer="21"/>
-<wire x1="0.9" y1="1.9" x2="1.5" y2="1.9" width="0.1524" layer="21"/>
-<wire x1="1.5" y1="1.9" x2="1.5" y2="2" width="0.1524" layer="21"/>
-<wire x1="1.5" y1="2" x2="2.5" y2="2" width="0.1524" layer="21"/>
-<wire x1="2.5" y1="2" x2="2.5" y2="2.34" width="0.1524" layer="21"/>
-<wire x1="2.5" y1="2.7" x2="1.5" y2="2.7" width="0.1524" layer="51"/>
-<wire x1="1.5" y1="2.7" x2="1.5" y2="2.8" width="0.1524" layer="51"/>
-<wire x1="1.12" y1="2.8" x2="0.9" y2="2.8" width="0.1524" layer="21"/>
-<wire x1="1.5" y1="2.8" x2="1.12" y2="2.8" width="0.1524" layer="51"/>
-<wire x1="2.5" y1="2.34" x2="2.5" y2="2.7" width="0.1524" layer="51"/>
-<wire x1="0.9" y1="-2.8" x2="0.9" y2="-1.9" width="0.1524" layer="21"/>
-<wire x1="0.9" y1="-1.9" x2="1.5" y2="-1.9" width="0.1524" layer="21"/>
-<wire x1="1.5" y1="-1.9" x2="1.5" y2="-2" width="0.1524" layer="21"/>
-<wire x1="1.5" y1="-2" x2="2.5" y2="-2" width="0.1524" layer="21"/>
-<wire x1="2.5" y1="-2" x2="2.5" y2="-2.34" width="0.1524" layer="21"/>
-<wire x1="2.5" y1="-2.7" x2="1.5" y2="-2.7" width="0.1524" layer="51"/>
-<wire x1="1.5" y1="-2.7" x2="1.5" y2="-2.8" width="0.1524" layer="51"/>
-<wire x1="1.12" y1="-2.8" x2="0.9" y2="-2.8" width="0.1524" layer="21"/>
-<wire x1="1.5" y1="-2.8" x2="1.12" y2="-2.8" width="0.1524" layer="51"/>
-<wire x1="2.5" y1="-2.34" x2="2.5" y2="-2.7" width="0.1524" layer="51"/>
-<wire x1="3.86" y1="2.8" x2="4.4" y2="2.8" width="0.1524" layer="51"/>
-<wire x1="3.86" y1="-2.8" x2="4.4" y2="-2.8" width="0.1524" layer="51"/>
-<wire x1="3.8" y1="-2.66" x2="3.8" y2="-2.19" width="0.1524" layer="51"/>
-<wire x1="3.8" y1="2.19" x2="3.8" y2="2.66" width="0.1524" layer="51"/>
-</package>
 <package name="QFN24_4MM_SMSC">
 <circle x="-3.048" y="1.27" radius="0.127" width="0.2032" layer="21"/>
 <wire x1="1.65" y1="-2" x2="2" y2="-2" width="0.2032" layer="21"/>
@@ -5120,68 +5040,6 @@ Source: &lt;a href="http://www.hirose.co.jp/cataloge_hp/ed_ZX_20140804.pdf"&gt;h
 <pin name="GND" x="-10.16" y="0" length="short"/>
 <pin name="FB" x="-10.16" y="-2.54" length="short"/>
 <pin name="EN" x="10.16" y="-2.54" length="short" rot="R180"/>
-</symbol>
-<symbol name="MICRO-USB">
-<wire x1="-2.168025" y1="6.721975" x2="-0.371975" y2="8.518025" width="0.254" layer="94"/>
-<wire x1="-0.371975" y1="8.518025" x2="0.52605" y2="8.89" width="0.254" layer="94" curve="-45"/>
-<wire x1="0.52605" y1="8.89" x2="3.81" y2="8.89" width="0.254" layer="94"/>
-<wire x1="-2.168025" y1="6.721975" x2="-2.54" y2="5.82395" width="0.254" layer="94" curve="45"/>
-<wire x1="-2.54" y1="5.82395" x2="-2.54" y2="5.08" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="5.08" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="2.54" x2="-2.54" y2="0" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="0" x2="-2.54" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-2.54" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-5.08" x2="-2.54" y2="-5.82395" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-5.82395" x2="-2.168025" y2="-6.721975" width="0.254" layer="94" curve="45"/>
-<wire x1="-2.168025" y1="-6.721975" x2="-0.371975" y2="-8.518025" width="0.254" layer="94"/>
-<wire x1="-0.371975" y1="-8.518025" x2="0.52605" y2="-8.89" width="0.254" layer="94" curve="45"/>
-<wire x1="0.52605" y1="-8.89" x2="3.81" y2="-8.89" width="0.254" layer="94"/>
-<wire x1="3.81" y1="-8.89" x2="5.08" y2="-7.62" width="0.254" layer="94" curve="90"/>
-<wire x1="5.08" y1="-7.62" x2="5.08" y2="7.62" width="0.254" layer="94"/>
-<wire x1="3.81" y1="8.89" x2="5.08" y2="7.62" width="0.254" layer="94" curve="-90"/>
-<wire x1="1.27" y1="6.35" x2="1.27" y2="5.08" width="0.254" layer="94"/>
-<wire x1="1.27" y1="5.08" x2="1.27" y2="2.54" width="0.254" layer="94"/>
-<wire x1="1.27" y1="2.54" x2="1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="1.27" y1="0" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="1.27" y1="-2.54" x2="1.27" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="1.27" y1="-5.08" x2="1.27" y2="-6.35" width="0.254" layer="94"/>
-<wire x1="1.27" y1="-6.35" x2="2.54" y2="-6.35" width="0.254" layer="94"/>
-<wire x1="2.54" y1="-6.35" x2="2.54" y2="6.35" width="0.254" layer="94"/>
-<wire x1="2.54" y1="6.35" x2="1.27" y2="6.35" width="0.254" layer="94"/>
-<text x="-2.54" y="11.43" size="1.778" layer="95" font="vector">&gt;NAME</text>
-<text x="8.89" y="-7.62" size="1.778" layer="96" font="vector" rot="R90">&gt;VALUE</text>
-<pin name="1" x="-10.16" y="5.08" visible="pad" length="short" direction="pas"/>
-<pin name="2" x="-10.16" y="2.54" visible="pad" length="short" direction="pas"/>
-<pin name="3" x="-10.16" y="0" visible="pad" length="short" direction="pas"/>
-<pin name="4" x="-10.16" y="-2.54" visible="pad" length="short" direction="pas"/>
-<pin name="5" x="-10.16" y="-5.08" visible="pad" length="short" direction="pas"/>
-<wire x1="1.27" y1="5.08" x2="-2.54" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="2.54" x2="-2.54" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="0" x2="-2.54" y2="0" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="-2.54" x2="-2.54" y2="-2.54" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="-5.08" x2="-2.54" y2="-5.08" width="0.1524" layer="94"/>
-<wire x1="-7.62" y1="5.08" x2="-2.54" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="-7.62" y1="2.54" x2="-2.54" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="-7.62" y1="0" x2="-2.54" y2="0" width="0.1524" layer="94"/>
-<wire x1="-7.62" y1="-2.54" x2="-2.54" y2="-2.54" width="0.1524" layer="94"/>
-<wire x1="-7.62" y1="-5.08" x2="-2.54" y2="-5.08" width="0.1524" layer="94"/>
-<text x="-9.398" y="5.334" size="1.778" layer="94">VBUS</text>
-<text x="-9.144" y="2.794" size="1.778" layer="94">D-</text>
-<text x="-9.144" y="0.254" size="1.778" layer="94">D+</text>
-<text x="-9.144" y="-2.286" size="1.778" layer="94">ID</text>
-<text x="-9.398" y="-4.826" size="1.778" layer="94">GND</text>
-</symbol>
-<symbol name="MICRO-USB-SHIELD">
-<wire x1="-7.62" y1="0" x2="0" y2="0" width="0.254" layer="94" style="shortdash"/>
-<wire x1="0" y1="0" x2="1.27" y2="1.27" width="0.254" layer="94" style="shortdash" curve="90"/>
-<wire x1="1.27" y1="1.27" x2="1.27" y2="19.05" width="0.254" layer="94" style="shortdash"/>
-<wire x1="-7.62" y1="20.32" x2="0" y2="20.32" width="0.254" layer="94" style="shortdash"/>
-<wire x1="0" y1="20.32" x2="1.27" y2="19.05" width="0.254" layer="94" style="shortdash" curve="-90"/>
-<text x="2.54" y="-2.54" size="1.778" layer="95" font="vector">&gt;NAME</text>
-<pin name="S1" x="-7.62" y="-2.54" visible="off" length="short" direction="pas" rot="R90"/>
-<pin name="S2" x="-5.08" y="-2.54" visible="off" length="short" direction="pas" rot="R90"/>
-<pin name="S3" x="-2.54" y="-2.54" visible="off" length="short" direction="pas" rot="R90"/>
-<pin name="S4" x="0" y="-2.54" visible="off" length="short" direction="pas" rot="R90"/>
 </symbol>
 <symbol name="CP2104">
 <wire x1="-12.7" y1="22.86" x2="12.7" y2="22.86" width="0.254" layer="94"/>
@@ -5334,38 +5192,6 @@ The MP1541 is a 5-pin thin SOT23 current mode step up converter intended for sma
 </connects>
 <technologies>
 <technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="ZX62D-B-5PA8" prefix="X">
-<description>&lt;b&gt;Micro USB Type B Connector&lt;/b&gt; - Standard, Shell Through Hole&lt;br&gt;
-&lt;br&gt;
-Source: &lt;a href="http://www.hirose.co.jp/cataloge_hp/ed_ZX_20140804.pdf"&gt;http://www.hirose.co.jp/cataloge_hp/ed_ZX_20140804.pdf&lt;/a&gt;</description>
-<gates>
-<gate name="G$1" symbol="MICRO-USB" x="0" y="0"/>
-<gate name="S" symbol="MICRO-USB-SHIELD" x="5.08" y="-10.16" addlevel="request"/>
-</gates>
-<devices>
-<device name="" package="ZX62D-B-5PA8">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-<connect gate="G$1" pin="4" pad="4"/>
-<connect gate="G$1" pin="5" pad="5"/>
-<connect gate="S" pin="S1" pad="S1"/>
-<connect gate="S" pin="S2" pad="S2"/>
-<connect gate="S" pin="S3" pad="S3"/>
-<connect gate="S" pin="S4" pad="S4"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="MF" value="Hirose" constant="no"/>
-<attribute name="MPN" value="ZX62D-B-5PA8" constant="no"/>
-<attribute name="OC_FARNELL" value="2300438" constant="no"/>
-<attribute name="OC_NEWARK" value="69W0712" constant="no"/>
-</technology>
 </technologies>
 </device>
 </devices>
@@ -5678,6 +5504,34 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="-0.6" y1="-1.225" x2="-0.6" y2="-1.225" width="0.2" layer="21"/>
 <wire x1="-0.6" y1="-1.225" x2="-0.8" y2="-1.225" width="0.2" layer="21" curve="-180"/>
 </package>
+<package name="614105150621">
+<description>&lt;b&gt;614105150621&lt;/b&gt;&lt;br&gt;
+</description>
+<pad name="1" x="-1.3" y="-0.065" drill="0.4" diameter="0.9"/>
+<pad name="2" x="-0.65" y="-1.065" drill="0.4" diameter="0.9"/>
+<pad name="3" x="0" y="-0.065" drill="0.4" diameter="0.9"/>
+<pad name="4" x="0.65" y="-1.065" drill="0.4" diameter="0.9"/>
+<pad name="5" x="1.3" y="-0.065" drill="0.4" diameter="0.9"/>
+<pad name="6" x="-3.575" y="-0.285" drill="1.2" diameter="1.8"/>
+<pad name="7" x="3.575" y="-0.285" drill="1.2" diameter="1.8"/>
+<text x="0" y="0" size="1.27" layer="25" align="center">&gt;NAME</text>
+<text x="0" y="0" size="1.27" layer="27" align="center">&gt;VALUE</text>
+<wire x1="-4" y1="0.89" x2="4" y2="0.89" width="0.2" layer="51"/>
+<wire x1="4" y1="0.89" x2="4" y2="-1.46" width="0.2" layer="51"/>
+<wire x1="4" y1="-1.46" x2="-4" y2="-1.46" width="0.2" layer="51"/>
+<wire x1="-4" y1="-1.46" x2="-4" y2="0.89" width="0.2" layer="51"/>
+<wire x1="-5.475" y1="2.515" x2="5.475" y2="2.515" width="0.1" layer="51"/>
+<wire x1="5.475" y1="2.515" x2="5.475" y2="-2.515" width="0.1" layer="51"/>
+<wire x1="5.475" y1="-2.515" x2="-5.475" y2="-2.515" width="0.1" layer="51"/>
+<wire x1="-5.475" y1="-2.515" x2="-5.475" y2="2.515" width="0.1" layer="51"/>
+<wire x1="-4" y1="0.89" x2="4" y2="0.89" width="0.1" layer="21"/>
+<wire x1="-4" y1="-1.46" x2="-1.5" y2="-1.46" width="0.1" layer="21"/>
+<wire x1="1.5" y1="-1.46" x2="4" y2="-1.46" width="0.1" layer="21"/>
+<wire x1="-1.4" y1="1.415" x2="-1.4" y2="1.415" width="0.2" layer="21"/>
+<wire x1="-1.4" y1="1.415" x2="-1.2" y2="1.415" width="0.2" layer="21" curve="-180"/>
+<wire x1="-1.2" y1="1.415" x2="-1.2" y2="1.415" width="0.2" layer="21"/>
+<wire x1="-1.2" y1="1.415" x2="-1.4" y2="1.415" width="0.2" layer="21" curve="-180"/>
+</package>
 </packages>
 <symbols>
 <symbol name="MIC6211YM5-TR">
@@ -5718,6 +5572,21 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pin name="GND" x="0" y="-2.54" length="middle"/>
 <pin name="SDA" x="25.4" y="0" length="middle" rot="R180"/>
 <pin name="SCL" x="25.4" y="-2.54" length="middle" rot="R180"/>
+</symbol>
+<symbol name="614105150621">
+<wire x1="5.08" y1="2.54" x2="15.24" y2="2.54" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-10.16" x2="15.24" y2="2.54" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-10.16" x2="5.08" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="5.08" y1="2.54" x2="5.08" y2="-10.16" width="0.254" layer="94"/>
+<text x="16.51" y="7.62" size="1.778" layer="95" align="center-left">&gt;NAME</text>
+<text x="16.51" y="5.08" size="1.778" layer="96" align="center-left">&gt;VALUE</text>
+<pin name="1" x="0" y="0" length="middle"/>
+<pin name="3" x="0" y="-2.54" length="middle"/>
+<pin name="5" x="0" y="-5.08" length="middle"/>
+<pin name="7" x="0" y="-7.62" length="middle"/>
+<pin name="2" x="20.32" y="0" length="middle" rot="R180"/>
+<pin name="4" x="20.32" y="-2.54" length="middle" rot="R180"/>
+<pin name="6" x="20.32" y="-5.08" length="middle" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -5813,6 +5682,38 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 </device>
 </devices>
 </deviceset>
+<deviceset name="614105150621" prefix="J">
+<description>&lt;b&gt;WURTH ELEKTRONIK - 614105150621 - MICRO USB, 2.0 TYPE AB, PLUG, CABLE&lt;/b&gt;&lt;p&gt;
+Source: &lt;a href="http://katalog.we-online.de/em/datasheet/614105150621.pdf"&gt; Datasheet &lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="614105150621" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="614105150621">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+<connect gate="G$1" pin="4" pad="4"/>
+<connect gate="G$1" pin="5" pad="5"/>
+<connect gate="G$1" pin="6" pad="6"/>
+<connect gate="G$1" pin="7" pad="7"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="DESCRIPTION" value="WURTH ELEKTRONIK - 614105150621 - MICRO USB, 2.0 TYPE AB, PLUG, CABLE" constant="no"/>
+<attribute name="HEIGHT" value="5mm" constant="no"/>
+<attribute name="MANUFACTURER_NAME" value="Wurth Elektronik" constant="no"/>
+<attribute name="MANUFACTURER_PART_NUMBER" value="614105150621" constant="no"/>
+<attribute name="MOUSER_PART_NUMBER" value="710-614105150621" constant="no"/>
+<attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.com/Search/Refine.aspx?Keyword=710-614105150621" constant="no"/>
+<attribute name="RS_PART_NUMBER" value="1225098" constant="no"/>
+<attribute name="RS_PRICE-STOCK" value="http://uk.rs-online.com/web/p/products/1225098" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
 </devicesets>
 </library>
 </libraries>
@@ -5873,7 +5774,6 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <part name="C3" library="SparkFun-Capacitors" deviceset="10UF10V10%(0805)" device="" value="10uF"/>
 <part name="C4" library="SparkFun-Capacitors" deviceset="10UF10V10%(0805)" device="" value="10uF"/>
 <part name="GND11" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="X1" library="GDTech" deviceset="ZX62D-B-5PA8" device=""/>
 <part name="U2" library="GDTech" deviceset="CP2104" device=""/>
 <part name="Q1" library="SparkFun-DiscreteSemi" deviceset="TRANSISTOR_NPN" device="MMBT2222A" value="NPN"/>
 <part name="Q2" library="SparkFun-DiscreteSemi" deviceset="TRANSISTOR_NPN" device="MMBT2222A" value="NPN"/>
@@ -5904,6 +5804,8 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <part name="R17" library="adafruit" deviceset="R-US_" device="R0805" value="10k"/>
 <part name="SUPPLY13" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="U4" library="SamacSys_Parts" deviceset="LTR-329ALS-01" device="" value="LTR-329"/>
+<part name="C9" library="SparkFun-Capacitors" deviceset="10UF10V10%(0805)" device="" value="10uf"/>
+<part name="J1" library="SamacSys_Parts" deviceset="614105150621" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -6078,10 +5980,6 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <instance part="GND11" gate="1" x="246.38" y="-5.08" smashed="yes">
 <attribute name="VALUE" x="243.84" y="-7.62" size="1.778" layer="96"/>
 </instance>
-<instance part="X1" gate="G$1" x="-10.16" y="-60.96" smashed="yes" rot="R180">
-<attribute name="NAME" x="-7.62" y="-72.39" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="-19.05" y="-53.34" size="1.778" layer="96" font="vector" rot="R270"/>
-</instance>
 <instance part="U2" gate="G$1" x="68.58" y="-53.34" smashed="yes">
 <attribute name="NAME" x="55.88" y="-24.13" size="1.27" layer="95"/>
 <attribute name="VALUE" x="55.88" y="-86.36" size="1.27" layer="96"/>
@@ -6196,6 +6094,14 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <attribute name="NAME" x="219.71" y="-25.4" size="1.778" layer="95" align="center-left"/>
 <attribute name="VALUE" x="219.71" y="-27.94" size="1.778" layer="96" align="center-left"/>
 </instance>
+<instance part="C9" gate="G$1" x="200.66" y="-33.02" smashed="yes" rot="R180">
+<attribute name="NAME" x="199.136" y="-35.941" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="199.136" y="-30.861" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="J1" gate="G$1" x="-17.78" y="-73.66" smashed="yes">
+<attribute name="NAME" x="-1.27" y="-66.04" size="1.778" layer="95" align="center-left"/>
+<attribute name="VALUE" x="-1.27" y="-68.58" size="1.778" layer="96" align="center-left"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -6286,6 +6192,10 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <pinref part="U4" gate="G$1" pin="VDD"/>
 <wire x1="215.9" y1="-33.02" x2="205.74" y2="-33.02" width="0.1524" layer="91"/>
 <label x="205.74" y="-33.02" size="1.778" layer="95"/>
+<wire x1="205.74" y1="-33.02" x2="205.74" y2="-27.94" width="0.1524" layer="91"/>
+<pinref part="C9" gate="G$1" pin="2"/>
+<wire x1="200.66" y1="-30.48" x2="200.66" y2="-27.94" width="0.1524" layer="91"/>
+<wire x1="200.66" y1="-27.94" x2="205.74" y2="-27.94" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="12V" gate="G$1" pin="IN"/>
@@ -6498,9 +6408,20 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <pinref part="GND1" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="X1" gate="G$1" pin="5"/>
-<wire x1="0" y1="-55.88" x2="10.16" y2="-55.88" width="0.1524" layer="91"/>
-<label x="5.08" y="-55.88" size="1.778" layer="95"/>
+<wire x1="-27.94" y1="-78.74" x2="-22.86" y2="-78.74" width="0.1524" layer="91"/>
+<label x="-22.86" y="-78.74" size="1.778" layer="95"/>
+<pinref part="J1" gate="G$1" pin="5"/>
+<wire x1="-22.86" y1="-78.74" x2="-17.78" y2="-78.74" width="0.1524" layer="91"/>
+<wire x1="-22.86" y1="-78.74" x2="-22.86" y2="-81.28" width="0.1524" layer="91"/>
+<junction x="-22.86" y="-78.74"/>
+<pinref part="J1" gate="G$1" pin="7"/>
+<wire x1="-22.86" y1="-81.28" x2="-17.78" y2="-81.28" width="0.1524" layer="91"/>
+<pinref part="J1" gate="G$1" pin="6"/>
+<wire x1="2.54" y1="-78.74" x2="10.16" y2="-78.74" width="0.1524" layer="91"/>
+<wire x1="10.16" y1="-78.74" x2="10.16" y2="-88.9" width="0.1524" layer="91"/>
+<wire x1="10.16" y1="-88.9" x2="-22.86" y2="-88.9" width="0.1524" layer="91"/>
+<wire x1="-22.86" y1="-88.9" x2="-22.86" y2="-81.28" width="0.1524" layer="91"/>
+<junction x="-22.86" y="-81.28"/>
 </segment>
 <segment>
 <pinref part="CN1" gate="G$1" pin="1"/>
@@ -6531,6 +6452,10 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <pinref part="U4" gate="G$1" pin="GND"/>
 <wire x1="215.9" y1="-35.56" x2="205.74" y2="-35.56" width="0.1524" layer="91"/>
 <label x="205.74" y="-35.56" size="1.778" layer="95"/>
+<wire x1="205.74" y1="-35.56" x2="205.74" y2="-40.64" width="0.1524" layer="91"/>
+<wire x1="205.74" y1="-40.64" x2="200.66" y2="-40.64" width="0.1524" layer="91"/>
+<pinref part="C9" gate="G$1" pin="1"/>
+<wire x1="200.66" y1="-38.1" x2="200.66" y2="-40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="RESET" class="0">
@@ -6742,9 +6667,9 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <pinref part="SUPPLY5" gate="G$1" pin="VIN"/>
 </segment>
 <segment>
-<pinref part="X1" gate="G$1" pin="1"/>
-<wire x1="0" y1="-66.04" x2="10.16" y2="-66.04" width="0.1524" layer="91"/>
-<label x="5.08" y="-66.04" size="1.778" layer="95"/>
+<wire x1="-27.94" y1="-73.66" x2="-17.78" y2="-73.66" width="0.1524" layer="91"/>
+<label x="-22.86" y="-73.66" size="1.778" layer="95"/>
+<pinref part="J1" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="LDO_EN" class="0">
@@ -6971,9 +6896,9 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <label x="40.64" y="-60.96" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="X1" gate="G$1" pin="3"/>
-<wire x1="0" y1="-60.96" x2="10.16" y2="-60.96" width="0.1524" layer="91"/>
-<label x="5.08" y="-60.96" size="1.778" layer="95"/>
+<wire x1="-27.94" y1="-76.2" x2="-17.78" y2="-76.2" width="0.1524" layer="91"/>
+<label x="-22.86" y="-76.2" size="1.778" layer="95"/>
+<pinref part="J1" gate="G$1" pin="3"/>
 </segment>
 </net>
 <net name="D-" class="0">
@@ -6983,9 +6908,9 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 <label x="40.64" y="-63.5" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="X1" gate="G$1" pin="2"/>
-<wire x1="0" y1="-63.5" x2="10.16" y2="-63.5" width="0.1524" layer="91"/>
-<label x="5.08" y="-63.5" size="1.778" layer="95"/>
+<wire x1="2.54" y1="-73.66" x2="12.7" y2="-73.66" width="0.1524" layer="91"/>
+<label x="7.62" y="-73.66" size="1.778" layer="95"/>
+<pinref part="J1" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -6998,8 +6923,8 @@ Source: &lt;a href="http://www.mouser.com/ds/2/239/liteon_LTR-329ALS-01-1175539.
 </net>
 <net name="N$16" class="0">
 <segment>
-<pinref part="X1" gate="G$1" pin="4"/>
-<wire x1="0" y1="-58.42" x2="10.16" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="-76.2" x2="12.7" y2="-76.2" width="0.1524" layer="91"/>
+<pinref part="J1" gate="G$1" pin="4"/>
 </segment>
 </net>
 <net name="N$1" class="0">
