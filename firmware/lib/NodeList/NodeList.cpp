@@ -141,10 +141,14 @@ bool NodeList::deleteNode(int iNodeID)
       //check if there is a node after this one. If so, relink the list without this node and delete the node
       if(q->next){
         last->next = q->next;
+        if(nodeptr == q)
+          nodeptr = last->next; //set the current location to the node after the deleted node
         delete q;
       } else {
       //if there isnt a node after this, just terminate the list and delete the node
         last->next = NULL;
+        if(nodeptr == q)
+          nodeptr = last; //set the current location to the node before the one deleted
         delete q;
       }
       return true;
