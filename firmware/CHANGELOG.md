@@ -1,4 +1,15 @@
 # SensorIoT-GW change log
+## [1.1.2]
+
+### Changed
+
+- Updated MQTT keepalive time to 240s to be creater than ping interval (60s) on branch using RadioHead radio lib
+
+## [1.0.10] 10/22/2019
+
+### Changed
+
+- Updated MQTT keepalive time to 240s to be creater than ping interval (60s) on branch using lowpowerlab radio lib
 
 ## [1.1.1] 9/26/2019
 

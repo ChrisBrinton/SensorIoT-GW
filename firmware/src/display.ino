@@ -611,6 +611,8 @@ void displayLoop(){
 
     doDisplay();
 
-    doBrightness();
+    if(DISPLAY_HAS_LIGHT_SENSOR) {
+        doBrightness();
+    }
 
 }

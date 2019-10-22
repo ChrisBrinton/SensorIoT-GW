@@ -48,6 +48,7 @@
 #define DISPLAY_ALWAYS_ENABLED      "on"
 #define DISPLAY_ENABLE_TIME         "06:00"
 #define DISPLAY_DISABLE_TIME        "22:00"
+#define DISPLAY_HAS_LIGHT_SENSOR    true
 #define DISPLAY_MAX_BRIGHTNESS      0x4F
 #define DISPLAY_BRIGHTNESS_RANGE    25
 #define DISPLAY_AUTO_BRIGHTNESS     "on"
@@ -61,7 +62,7 @@
 #define MQTT_PORT               1883
 #define MQTT_RETAIN             false
 #define MQTT_QOS                0
-#define MQTT_KEEPALIVE          30
+#define MQTT_KEEPALIVE          240
 #define MQTT_RECONNECT_DELAY    10000
 #define MQTT_TRY_INTERVAL       30000
 #define MQTT_MAX_TRIES          20

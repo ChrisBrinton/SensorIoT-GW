@@ -51,7 +51,9 @@ double avgLight;
 void sensorSetup(){
 
   THPSensorSetup();
-  ALSensorSetup();
+  if(DISPLAY_HAS_LIGHT_SENSOR) {
+    ALSensorSetup();
+  }
 
 }
 
@@ -110,8 +112,9 @@ void setALSensor() {
 void sensorLoop(){
 
   THPSensorLoop();
-  AmbLightSensorLoop();
-
+  if(DISPLAY_HAS_LIGHT_SENSOR) {
+    AmbLightSensorLoop();
+  }
 }
 
 void THPSensorLoop() {
