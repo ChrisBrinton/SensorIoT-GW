@@ -6,6 +6,7 @@ yarn-error.log
 
 #Platformio
 #
+.pio
 .pioenvs
 .clang_complete
 .gcc-flags.json
