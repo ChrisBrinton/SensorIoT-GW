@@ -21,9 +21,9 @@ Then the following will install the repo and build:
 
 If the build fails due to errors such as
 
-    .piolibdeps\ESP Async WebServer_ID306\src\WebHandlers.cpp:78:25: error: 'time' was not declared in this scope
+    .pio\libdeps\node\ESP Async WebServer_ID306\src\WebHandlers.cpp:78:25: error: 'time' was not declared in this scope
 
-You'll need to remove .piolibdeps\Time\Time.h. This error happens on windows due to a lack of case sensitivity between Time.h (not needed for this project) and time.h (needed for this project)
+You'll need to remove .pio\libdeps\node\Time_ID44\Time.h. This error happens on windows due to a lack of case sensitivity between Time.h (not needed for this project) and time.h (needed for this project)
 
 To deploy to your device you need to upload both the SPIFFS filesystem that contains the static web data and the initial settings, then the firmware code:
 

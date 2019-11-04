@@ -1,4 +1,9 @@
 # SensorIoT-GW change log
+## [1.1.3] [1.0.11]
+### Fixed
+
+- Updated NtpClientLib to current version to resolve issue with USA DST calculation
+
 ## [1.1.2]
 
 ### Changed
