@@ -564,7 +564,6 @@ void doDisplay() {
 
 void doBrightness() {
     static int lastMillis = 0;
-    static int lastState = DISPLAY_STATE_NONE;
     int nowMillis = millis();
     if(nowMillis > (lastMillis + 4000)){
         lastMillis = nowMillis;

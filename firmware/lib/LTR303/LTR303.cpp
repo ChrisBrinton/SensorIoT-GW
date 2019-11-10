@@ -549,7 +549,7 @@ boolean LTR303::readByte(byte address, byte &value) {
 	// Read requested byte
 	if (_error == 0)
 	{
-		Wire.requestFrom(_i2c_address,1);
+		Wire.requestFrom(_i2c_address,(uint8_t)1);
 		delay(1); //Give the device a milli to put the data on the wire
 		if (Wire.available() == 1)
 		{
@@ -595,7 +595,7 @@ boolean LTR303::readUInt(byte address, unsigned int &value) {
 	// Read two bytes (low and high)
 	if (_error == 0)
 	{
-		Wire.requestFrom(_i2c_address,2);
+		Wire.requestFrom(_i2c_address,(uint8_t)2);
 		delay(1); //Give the device a milli to put the data on the wire
 		if (Wire.available() == 2)
 		{

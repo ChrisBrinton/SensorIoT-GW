@@ -98,7 +98,6 @@ bool RadioHeadManager::loop() {
                 char sep[3] = {_separator0, _separator1, 0};
                 char* names[NUMOFPAIRS];
                 char* values[NUMOFPAIRS];
-                char * pair;
                 names[0] = strtok(buffer, sep);
                 values[0] = strtok(NULL, sep);
                 //DEBUG_MSG("[MESSAGE] name: %s value: %s\n", names[0], values[0]);

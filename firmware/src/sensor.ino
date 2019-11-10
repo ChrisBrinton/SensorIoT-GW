@@ -163,7 +163,6 @@ void THPSensorLoop() {
 void AmbLightSensorLoop(){
   static int lastMillis = 0;
   int nowMillis = millis();
-  static uint8_t failCount = 0;
   //take a reading every 10sec
   if(lastMillis==0 || (nowMillis > (lastMillis + 4000)) || nowMillis < lastMillis){
     lastMillis = nowMillis;

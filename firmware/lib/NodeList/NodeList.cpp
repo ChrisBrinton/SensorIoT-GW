@@ -32,7 +32,6 @@ bool NodeList::insertNode(int newNode)
       listLength++;
       return true;
     }
-    int count = 0;
     node* p = head;
     node* q = head;
     while (q)

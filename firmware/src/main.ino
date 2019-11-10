@@ -417,15 +417,15 @@ void setup() {
         saveSettings();
     }
 
+
     wifiSetup();
     otaSetup();
     mqttSetup();
-    
-    radioSetup();
-    webSetup();
+    radioSetup(); 
     ntpSetup();
-    sensorSetup();
-    displaySetup();
+    sensorSetup(); 
+    displaySetup();     
+    webSetup();
     restartSetup();
 
 }
