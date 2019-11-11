@@ -1,5 +1,13 @@
 # SensorIoT-GW change log
 
+## [1.0.12] 11/11/2019
+ - update platformio core to 2.2.3
+ - updated libraries to be compatible with new platformio core
+     - ESPAsyncTCP@1.2.2
+     - ESP Async WebServer@1.2.3
+     - AsyncMqttClient@0.8.2
+	 - RFM69@7f140f0 (with ISR fix cherry-pick)
+
 ## [1.0.9] 6/18/2019
 ### Changed
  - Reorganized main display code to move slowly side to side (1px/m) to wear OLED displays evenly.
