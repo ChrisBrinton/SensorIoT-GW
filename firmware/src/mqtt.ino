@@ -28,7 +28,9 @@ void mqttDisconnect() {
 void mqttSend(char * topic, char * message) {
     if (!mqtt.connected()) return;
     DEBUG_MSG("[MQTT] Sending %s%s\n", topic, message);
-    mqtt.publish(topic, MQTT_QOS, MQTT_RETAIN, message);
+    if(!mqtt.publish(topic, MQTT_QOS, MQTT_RETAIN, message)) {
+        DEBUG_MSG("[MQTT] Send failed!\n");
+    };
 }
 
 void _mqttOnConnect(bool sessionPresent) {

@@ -19,7 +19,7 @@ Updated 2018-2019 by Chris Brinton to support file upload and firmware update
 #include <Ticker.h>
 
 AsyncWebServer server(80);
-AsyncWebSocket ws("/ws");
+AsyncWebSocket _ws("/ws");
 Ticker deferred;
 
 extern "C" uint32_t _SPIFFS_start;
@@ -37,14 +37,14 @@ ws_ticket_t _ticket[WS_BUFFER_SIZE];
 
 bool wsSend(const char * payload) {
     //DEBUG_MSG("[WEBSOCKET] Broadcasting '%s'\n", payload);
-    ws.textAll(payload);
+    _ws.textAll(payload);
 
     return true;
 }
 
 bool wsSend(uint32_t client_id, const char * payload) {
     //DEBUG_MSG("[WEBSOCKET] Sending '%s' to #%ld\n", payload, client_id);
-    ws.text(client_id, payload);
+    _ws.text(client_id, payload);
 
     return true;
 }
@@ -56,7 +56,7 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
     JsonObject& root = jsonBuffer.parseObject((char *) payload);
     if (!root.success()) {
         DEBUG_MSG("[WEBSOCKET] Error parsing data\n");
-        ws.text(client_id, "{\"message\": \"Error parsing data!\"}");
+        _ws.text(client_id, "{\"message\": \"Error parsing data!\"}");
         return;
     }
     // Check actions
@@ -153,11 +153,11 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
                 mqttDisconnect();
             }
 
-            ws.text(client_id, "{\"message\": \"Changes saved\"}");
+            _ws.text(client_id, "{\"message\": \"Changes saved\"}");
 
         } else {
 
-            ws.text(client_id, "{\"message\": \"No changes detected\"}");
+            _ws.text(client_id, "{\"message\": \"No changes detected\"}");
 
         }
 
@@ -218,7 +218,7 @@ void _wsStart(uint32_t client_id) {
 
     String output;
     root.printTo(output);
-    ws.text(client_id, (char *) output.c_str());
+    _ws.text(client_id, (char *) output.c_str());
     DEBUG_MSG("[WEBSOCKET] Sent config to page: %s\n", (char *) output.c_str());
 
 }
@@ -235,7 +235,7 @@ bool _wsAuth(AsyncWebSocketClient * client) {
 
     if (index == WS_BUFFER_SIZE) {
         DEBUG_MSG("[WEBSOCKET] Validation check failed\n");
-        ws.text(client->id(), "{\"message\": \"Session expired, please reload page...\"}");
+        _ws.text(client->id(), "{\"message\": \"Session expired, please reload page...\"}");
         return false;
     }
 
@@ -430,8 +430,8 @@ void _onUpload(AsyncWebServerRequest *request, String filename, size_t index, ui
 void webSetup() {
 
     // Setup websocket plugin
-    ws.onEvent(_wsEvent);
-    server.addHandler(&ws);
+    _ws.onEvent(_wsEvent);
+    server.addHandler(&_ws);
 
     // Serve home (password protected)
     server.on("/", HTTP_GET, _onHome);
