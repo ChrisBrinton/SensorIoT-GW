@@ -330,17 +330,17 @@ void hardwareLoop() {
 
     // Heartbeat
     static unsigned long last_heartbeat = 0;
-    if (mqttConnected()) {
-        if ((millis() - last_heartbeat > HEARTBEAT_INTERVAL) || (last_heartbeat == 0)) {
-            last_heartbeat = millis();
+    if ((millis() - last_heartbeat > HEARTBEAT_INTERVAL) || (last_heartbeat == 0)) {
+        last_heartbeat = millis();
+        if (mqttConnected()) {
             String sTopic = getSetting("hbTopic", MQTT_HEARTBEAT_TOPIC);
             String tmpHN = String(getSetting("hostname", APP_NAME));
             tmpHN.replace("_","/");
             sTopic.replace("{hostname}", tmpHN);
             mqttSend((char *) sTopic.c_str(), (char *) String(APP_VERSION).c_str());
-            DEBUG_MSG("[BEAT] Free heap: %d\n", ESP.getFreeHeap());
             DEBUG_MSG("[NTP] Time: %s\n", (char *) NTP.getTimeDateString().c_str());
         }
+        DEBUG_MSG("[BEAT] Free heap: %d\n", ESP.getFreeHeap());
     }
 
 }
