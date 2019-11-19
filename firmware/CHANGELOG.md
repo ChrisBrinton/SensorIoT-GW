@@ -1,5 +1,24 @@
 # SensorIoT-GW change log
-## [1.1.3] [1.0.11]
+## [1.1.5]
+### Changed
+
+- Updated settings save to only restart Wifi if Wifi settings changed.
+- Heartbeat the heap size even if not connected to MQTT
+
+### Fixed
+
+- Disable local DNS server in AP mode as there is a memory leak that needs to be tracked down.
+
+## [1.1.4]
+### Changed
+
+- Updated the following to improve TCP stability
+    - Updated platformio core to 2.2.3 (arduino core 2.5.2)
+    - Updated ESPAsyncTCP to 1.2.2
+    - Updated ESP Async WebServer to 1.2.3
+    - Updated RadioHead@1.97 (required for new esp/platformio core)
+
+## [1.1.3]
 ### Fixed
 
 - Updated NtpClientLib to current version to resolve issue with USA DST calculation
