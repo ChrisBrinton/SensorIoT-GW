@@ -215,7 +215,8 @@ void wifiSetup() {
     // Message callbacks
     jw.subscribe(wifiInfoCallback);
     jw.subscribe(mdnsCallback);
-    jw.subscribe(captivePortalCallback);
+    //Disable the local DNS server until we can find the memory leak
+	//jw.subscribe(captivePortalCallback);
 
 	wifiConfigure();
 
