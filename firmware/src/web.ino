@@ -84,6 +84,7 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
 
         bool dirty = false;
         bool dirtyMQTT = false;
+        bool dirtyWifi = false;
         unsigned int network = 0;
         unsigned int mappingCount = getSetting("mappingCount", "0").toInt();
         unsigned int mapping = 0;
@@ -125,6 +126,10 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
                     DEBUG_MSG("[WEBSOCKET] MQTT settings marked dirty\n");
                     dirtyMQTT = true;
                 } 
+                if (key.startsWith("ssid") || key.startsWith("pass")) {
+                    DEBUG_MSG("[WEBSOCKET] MQTT settings marked dirty\n");
+                    dirtyWifi = true;
+                }
             }
 
         }
@@ -145,15 +150,21 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
             DEBUG_MSG("[WEBSOCKET] changes detected. Saving settings. Free heap: %d\n", ESP.getFreeHeap());
 
             saveSettings();
-            wifiConfigure();
+            _ws.text(client_id, "{\"message\": \"Changes saved\"}");
+
+            //Only restart the wifi if those settings have changed as this kills the websocket.
+            if(dirtyWifi) {
+                DEBUG_MSG("[WEBSOCKET] Wifi changes detected. Reconfiguring Wifi Free heap: %d\n", ESP.getFreeHeap());
+                wifiConfigure();
+            }
+
             otaConfigure();
 
             // Check if we should reconfigure MQTT connection
             if (dirtyMQTT) {
+                DEBUG_MSG("[WEBSOCKET] changes detected. Disconnecting MQTT. Free heap: %d\n", ESP.getFreeHeap());
                 mqttDisconnect();
             }
-
-            _ws.text(client_id, "{\"message\": \"Changes saved\"}");
 
         } else {
 
@@ -162,6 +173,8 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
         }
 
     }
+
+    jsonBuffer.clear(); //Belt and suspenders as this is going out of scope anyway.
 
 }
 
@@ -198,7 +211,6 @@ void _wsStart(uint32_t client_id) {
     root["hbTopic"] = getSetting("hbTopic", MQTT_HEARTBEAT_TOPIC);
     root["defaultTopic"] = getSetting("defaultTopic", MQTT_DEFAULT_TOPIC);
 
-    DEBUG_MSG("[WEBSOCKET] Before wifi array\n");
     JsonArray& wifi = root.createNestedArray("wifi");
     for (byte i=0; i<3; i++) {
         JsonObject& network = wifi.createNestedObject();
@@ -206,7 +218,6 @@ void _wsStart(uint32_t client_id) {
         network["pass"] = getSetting("pass" + String(i));
     }
 
-    DEBUG_MSG("[WEBSOCKET] Before mapping array\n");
     JsonArray& mappings = root.createNestedArray("mapping");
     byte mappingCount = getSetting("mappingCount", "0").toInt();
     for (byte i=0; i<mappingCount; i++) {
