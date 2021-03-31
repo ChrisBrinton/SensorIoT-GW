@@ -15,8 +15,10 @@ Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
 // -----------------------------------------------------------------------------
 
 void ntpConnect() {
+    DEBUG_MSG("[NTP] starting with Server: %s, Time Offset: %i, Daylight: %s, Update Interval: %i\n", NTP_SERVER, NTP_TIME_OFFSET, NTP_DAY_LIGHT ? "true":"false", NTP_UPDATE_INTERVAL);
     NTP.begin(NTP_SERVER, NTP_TIME_OFFSET, NTP_DAY_LIGHT);
     NTP.setInterval(NTP_UPDATE_INTERVAL);
+    NTP.setDSTZone(DST_ZONE_USA);
 }
 
 void ntpSetup() {

@@ -1,5 +1,8 @@
 # SensorIoT-GW change log
 
+## [1.0.13] 3/31/21
+### Fixed
+- Update NTP lib and set config to USA TZ to fix DST calc
 ## [1.0.12] 11/11/2019
  - update platformio core to 2.2.3
  - updated libraries to be compatible with new platformio core
