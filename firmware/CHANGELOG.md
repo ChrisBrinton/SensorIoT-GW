@@ -1,4 +1,14 @@
 # SensorIoT-GW change log
+
+## [1.1.6]
+
+### Added
+- Logging for webserver in hopes of tracking down stability issues
+
+### Changed
+- Display Batt values for 3V battery (2xAA) battery more correctly
+### Fixed
+- Set NTP config to be correct for USA.
 ## [1.1.5]
 ### Changed
 

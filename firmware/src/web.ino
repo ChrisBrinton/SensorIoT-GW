@@ -308,6 +308,7 @@ void _logRequest(AsyncWebServerRequest *request) {
 }
 
 bool _authenticate(AsyncWebServerRequest *request) {
+    _logRequest(request);
     String password = getSetting("adminPass", ADMIN_PASS);
     char httpPassword[password.length() + 1];
     password.toCharArray(httpPassword, password.length() + 1);
@@ -315,7 +316,6 @@ bool _authenticate(AsyncWebServerRequest *request) {
 }
 
 void _onAuth(AsyncWebServerRequest *request) {
-
     _logRequest(request);
 
     if (!_authenticate(request)) return request->requestAuthentication();
@@ -348,6 +348,7 @@ void _onHome(AsyncWebServerRequest *request) {
 }
 
 bool _apiAuth(AsyncWebServerRequest *request) {
+    _logRequest(request);
 
     if (getSetting("apiEnabled").toInt() == 0) {
         DEBUG_MSG("[WEBSERVER] HTTP API is not enabled\n");
@@ -373,6 +374,7 @@ bool _apiAuth(AsyncWebServerRequest *request) {
 }
 
 void _onUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
+    _logRequest(request);
     //TODO: check if this is a legit file (MD5 hash? or just filename format?)
     int update_command;
     uint32_t maxSpace;
@@ -439,6 +441,7 @@ void _onUpload(AsyncWebServerRequest *request, String filename, size_t index, ui
 }
 
 void webSetup() {
+    DEBUG_MSG("[WEBSERVER] Configuring webserver\n");
 
     // Setup websocket plugin
     _ws.onEvent(_wsEvent);

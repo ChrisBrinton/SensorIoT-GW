@@ -278,13 +278,14 @@ void buildNodeDisplayPage(int iCenterOffset, int iYOffset){
 
     float dBAT = atof(nodeInfo[nodeList.currentNode()].THP->BAT.c_str());
     int iBatLvl = 0;
-    if(dBAT>3.5){
+    if(dBAT>2.5){
         iBatLvl=3;
-    } else if (dBAT > 3.3){
+    } else if (dBAT > 2.3){
         iBatLvl=2;
-    } else if (dBAT > 3.0){
+    } else if (dBAT > 2.0){
         iBatLvl=1;
-    } else if (dBAT < 2.7){
+    } else if (dBAT < 1.7){
+      //Above is for dual batter node, below for single.
       if(dBAT > 1.2){
           iBatLvl=3;
       } else if (dBAT > 1.0) {

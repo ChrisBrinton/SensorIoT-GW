@@ -80,6 +80,20 @@ void settingsSetup() {
         e->response(Embedis::OK);
     });
 
+    Embedis::command( F("EEPROM.DUMPCHAR"), [](Embedis* e) {
+        for (unsigned int i = 0; i < SPI_FLASH_SEC_SIZE; i++) {
+            if (i % 16 == 0) Serial.printf("\n[%04X] ", i);
+            int chr = EEPROM.read(i);
+            if(chr>=32 && chr <=126){
+                Serial.printf("%c ", EEPROM.read(i));
+            } else {
+                Serial.printf("%02X ", EEPROM.read(i));            
+            }
+        }
+        Serial.printf("\n");
+        e->response(Embedis::OK);
+    });
+
     Embedis::command( F("EEPROM.ERASE"), [](Embedis* e) {
         eraseAllSettings();
         e->response(Embedis::OK);
@@ -100,7 +114,11 @@ void settingsLoop() {
 
 template<typename T> String getSetting(const String& key, T defaultValue) {
     String value;
-    if (!Embedis::get(key, value)) value = String(defaultValue);
+    if (!Embedis::get(key, value)){
+        value = String(defaultValue);
+    } else {
+        //DEBUG_MSG("[SETTINGS] Embeddis returned key: %s, value: %s\n", key.c_str(), value.c_str());
+    }
     return value;
 }
 
@@ -130,7 +148,7 @@ bool eraseAllSettings() {
   }
   EEPROM.commit();
 
-  DEBUG_MSG("[SETTINGS] All Settings Erased");
+  DEBUG_MSG("[SETTINGS] All Settings Erased\n");
   stageDisplayMsg((char*)"All Settings Erased");
 
   return true;
