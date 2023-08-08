@@ -5,7 +5,7 @@ MQTT MODULE
 Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
 
 */
-
+#ifdef MQTT_SUBSYSTEM
 #include <ESP8266WiFi.h>
 #include <AsyncMqttClient.h>
 #include "config/all.h"
@@ -144,6 +144,27 @@ void mqttConnect() {
 
 }
 
+void getNicknames() {
+    
+    static bool nicknamesRequested = false;
+
+    if(!nicknamesRequested) {
+
+        // get command topic from config and replace placeholder strings
+        String commandTopic = getSetting("mqttCommandTopic", MQTT_COMMAND_TOPIC);
+        String tmpHN = String(getSetting("hostname", APP_NAME));
+        tmpHN.replace("_","/");
+        commandTopic.replace("{hostname}", tmpHN);
+
+        if ((WiFi.status() == WL_CONNECTED) && (mqttConnected())) {
+            nicknamesRequested = true;
+            mqttSend((char*)commandTopic.c_str(), (char*)"get_nicknames");
+            DEBUG_MSG("[DISPLAY] Nicknames requested via MQTT\n");
+        
+        } 
+    }
+}
+
 void mqttSetup() {
     if(getSetting("mqttEnabled", MQTT_ENABLED) == "on") {
         mqtt.onConnect(_mqttOnConnect);
@@ -172,3 +193,4 @@ void mqttLoop() {
       }
     }
 }
+#endif

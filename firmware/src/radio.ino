@@ -5,7 +5,7 @@ RADIO MODULE
 Copyright (C) 2016-2017 by Xose Pérez <xose dot perez at gmail dot com>
 
 */
-
+#ifdef RADIO_SUBSYSTEM
 #include "RadioHeadManager.h"
 #include "config/all.h"
 #include <RHReliableDatagram.h>
@@ -93,3 +93,4 @@ void radioLoop() {
     radio.loop();
 
 }
+#endif

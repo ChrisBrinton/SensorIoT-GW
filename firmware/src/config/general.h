@@ -1,10 +1,24 @@
 //------------------------------------------------------------------------------
+// SUBSYSTEM DEF
+//------------------------------------------------------------------------------
+//Comment out any of the below defines to disable a subsystem (and remove the code
+//from the flash image)
+//#define RADIO_SUBSYSTEM
+#define WIFI_SUBSYSTEM
+#define DISPLAY_SUBSYSTEM
+//#define MQTT_SUBSYSTEM
+#define NTP_SUBSYSTEM
+//#define BME280_SUBSYSTEM
+#define LTR329_SUBSYSTEM
+
+//------------------------------------------------------------------------------
 // GENERAL
 //------------------------------------------------------------------------------
 
 #define SERIAL_BAUDRATE         74880
 #define LED_PIN                 0
 
+#ifdef RADIO_SUBSYSTEM
 //------------------------------------------------------------------------------
 // RADIO
 //------------------------------------------------------------------------------
@@ -24,6 +38,10 @@
 #define RF69HCW_POWER           20  //RF69HCSs allow power to be set between -2 and 20
 #define RF95_CONFIG             RH_RF95::Bw125Cr45Sf128 //see RH_RF95.h for other options
 #define RF69HCW_CONFIG          RH_RF69::OOK_Rb1Bw1 //see RH_RF69.h for other options
+
+#endif
+
+#ifdef WIFI_SUBSYSTEM
 // -----------------------------------------------------------------------------
 // WIFI
 // -----------------------------------------------------------------------------
@@ -35,12 +53,15 @@
 #define WS_BUFFER_SIZE          5
 #define WS_TIMEOUT              1800000
 
+#endif
+
 // -----------------------------------------------------------------------------
 // OTA
 // -----------------------------------------------------------------------------
 
 #define OTA_PORT                8266
 
+#ifdef DISPLAY_SUBSYSTEM
 // -----------------------------------------------------------------------------
 // Display
 // -----------------------------------------------------------------------------
@@ -53,6 +74,9 @@
 #define DISPLAY_BRIGHTNESS_RANGE    25
 #define DISPLAY_AUTO_BRIGHTNESS     "on"
 
+#endif
+
+#ifdef MQTT_SUBSYSTEM
 // -----------------------------------------------------------------------------
 // MQTT
 // -----------------------------------------------------------------------------
@@ -73,6 +97,9 @@
 #define MQTT_DEFAULT_TOPIC      "/{hostname}/{nodeid}/{key}"
 #define MQTT_REPLY_TOPIC        "/reply/{hostname}/#"
 #define MQTT_COMMAND_TOPIC      "/command/{hostname}"
+
+#endif
+
 // -----------------------------------------------------------------------------
 // CONFIG SERVER
 // -----------------------------------------------------------------------------
@@ -81,6 +108,7 @@
 #define CSERV_PORT              443
 #define CSERV_CERT    "40 B6 D1 3A 9C FC 0A FC 58 24 92 D9 19 66 8C 14 06 D8 F4 81"
 
+#ifdef NTP_SUBSYSTEM
 // -----------------------------------------------------------------------------
 // NTP
 // -----------------------------------------------------------------------------
@@ -91,6 +119,9 @@
 #define NTP_UPDATE_INTERVAL     1800
 #define TIMEID                  0
 
+#endif
+
+#ifdef BME280_SUBSYSTEM
 // -----------------------------------------------------------------------------
 // Onboard BME280 Sensor
 // -----------------------------------------------------------------------------
@@ -101,6 +132,9 @@
 #define BME280_STANDBY          0
 #define SENSORID                1
 
+#endif
+
+#ifdef LTR329_SUBSYSTEM
 // -----------------------------------------------------------------------------
 // Onboard LTR-329 (Ambient Light) Sensor
 // -----------------------------------------------------------------------------
@@ -109,6 +143,8 @@
 #define LTR329_INT_TIME         3 //400ms
 #define LTR329_MEAS_RATE        5 //2000ms
 #define LTR329_ROLLING_AVG_SIZE 10
+
+#endif
 
 // -----------------------------------------------------------------------------
 // DEFAULTS

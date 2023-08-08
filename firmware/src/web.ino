@@ -163,7 +163,9 @@ void _wsParse(uint32_t client_id, uint8_t * payload, size_t length) {
             // Check if we should reconfigure MQTT connection
             if (dirtyMQTT) {
                 DEBUG_MSG("[WEBSOCKET] changes detected. Disconnecting MQTT. Free heap: %d\n", ESP.getFreeHeap());
+                #ifdef MQTT_SUBSYSTEM
                 mqttDisconnect();
+                #endif
             }
 
         } else {
@@ -196,11 +198,14 @@ void _wsStart(uint32_t client_id) {
     root["device"] = String(DEVICE);
     root["network"] = getNetwork();
     root["ip"] = getIP();
+    #ifdef DISPLAY_SUBSYSTEM
     root["displayAlwaysEnabled"] = getSetting("displayAlwaysEnabled", DISPLAY_ALWAYS_ENABLED);
     root["displayEnableTime"] = getSetting("displayEnableTime", DISPLAY_ENABLE_TIME);
     root["displayDisableTime"] = getSetting("displayDisableTime", DISPLAY_DISABLE_TIME);
     root["displayBrightnessAutoScale"] = getSetting("displayBrightnessAutoScale", DISPLAY_AUTO_BRIGHTNESS);
     root["displayBrightnessRange"] = getSetting("displayBrightnessRange", DISPLAY_BRIGHTNESS_RANGE);
+    #endif
+    #ifdef MQTT_SUBSYTEM
     root["mqttStatus"] = mqttConnected();
     root["mqttEnabled"] = getSetting("mqttEnabled", MQTT_ENABLED);
     root["mqttServer"] = getSetting("mqttServer", MQTT_SERVER);
@@ -210,6 +215,7 @@ void _wsStart(uint32_t client_id) {
     root["ipTopic"] = getSetting("ipTopic", MQTT_IP_TOPIC);
     root["hbTopic"] = getSetting("hbTopic", MQTT_HEARTBEAT_TOPIC);
     root["defaultTopic"] = getSetting("defaultTopic", MQTT_DEFAULT_TOPIC);
+    #endif
 
     JsonArray& wifi = root.createNestedArray("wifi");
     for (byte i=0; i<3; i++) {

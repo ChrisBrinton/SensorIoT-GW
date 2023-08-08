@@ -50,13 +50,18 @@ double avgLight;
 
 void sensorSetup(){
 
+#ifdef BME280_SUBSYSTEM
   THPSensorSetup();
+#endif
   if(DISPLAY_HAS_LIGHT_SENSOR) {
+    #ifdef LTR329_SUBSYSTEM
     ALSensorSetup();
+    #endif
   }
 
 }
 
+#ifdef BME280_SUBSYSTEM
 void THPSensorSetup() {
 
   bme280.settings.commInterface = I2C_MODE;
@@ -68,53 +73,6 @@ void THPSensorSetup() {
   bme280.settings.pressOverSample = BME280_OVERSAMPLE;
   bme280.settings.humidOverSample = BME280_OVERSAMPLE;
 
-}
-
-void ALSensorSetup(){
-
-  // Initialize the LTR303 library
-  // 100ms 	initial startup time required
-  delay(100);
-
-  resetALSensor();
-
-  setALSensor();
-
-  avgLight = 30;
-
-}
-
-// Perform a SW reset of the LTR-329
-void resetALSensor() {
-  DEBUG_MSG("[SENSOR] Resetting LTR-329\n");
-  // You can pass nothing to begin() for the default I2C address (0x29)
-  ltr329.begin();
-  //Performa a SW reset of the device (gain here is ignored)
-  ltr329.setControl(LTR329_GAIN, true, false);
-  delay(200); // wait after reset;
-}
-
-//Set the control registers of the LTR-329 and start capturing data
-void setALSensor() {
-
-  // You can pass nothing to begin() for the default I2C address (0x29)
-  ltr329.begin();
-
-  ltr329.setControl(LTR329_GAIN, false, false);
-
-  ltr329.setMeasurementRate(LTR329_INT_TIME,LTR329_MEAS_RATE);
-
-  ltr329.setPowerUp();
-  printAllLTR329Regs();
-
-}
-
-void sensorLoop(){
-
-  THPSensorLoop();
-  if(DISPLAY_HAS_LIGHT_SENSOR) {
-    AmbLightSensorLoop();
-  }
 }
 
 void THPSensorLoop() {
@@ -159,7 +117,47 @@ void THPSensorLoop() {
   }
 
 }
+#endif
 
+#ifdef LTR329_SUBSYSTEM
+void ALSensorSetup(){
+
+  // Initialize the LTR303 library
+  // 100ms 	initial startup time required
+  delay(100);
+
+  resetALSensor();
+
+  setALSensor();
+
+  avgLight = 30;
+
+}
+
+// Perform a SW reset of the LTR-329
+void resetALSensor() {
+  DEBUG_MSG("[SENSOR] Resetting LTR-329\n");
+  // You can pass nothing to begin() for the default I2C address (0x29)
+  ltr329.begin();
+  //Performa a SW reset of the device (gain here is ignored)
+  ltr329.setControl(LTR329_GAIN, true, false);
+  delay(200); // wait after reset;
+}
+
+//Set the control registers of the LTR-329 and start capturing data
+void setALSensor() {
+
+  // You can pass nothing to begin() for the default I2C address (0x29)
+  ltr329.begin();
+
+  ltr329.setControl(LTR329_GAIN, false, false);
+
+  ltr329.setMeasurementRate(LTR329_INT_TIME,LTR329_MEAS_RATE);
+
+  ltr329.setPowerUp();
+  printAllLTR329Regs();
+
+}
 void AmbLightSensorLoop(){
   static int lastMillis = 0;
   int nowMillis = millis();
@@ -225,3 +223,20 @@ void printAllLTR329Regs() {
 double getAvgLight() {
   return avgLight;
 }
+#endif
+
+void sensorLoop(){
+
+#ifdef BME280_SUBSYSTEM
+  THPSensorLoop();
+#endif
+  if(DISPLAY_HAS_LIGHT_SENSOR) {
+    #ifdef LTR329_SUBSYSTEM
+    AmbLightSensorLoop();
+    #endif
+  }
+}
+
+
+
+

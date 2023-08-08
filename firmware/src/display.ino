@@ -192,7 +192,7 @@ void BuildCurrentTimePage(int iCenterOffset, int iYOffset) {
     display.println(ampmString.c_str());
 }
 
-
+#if defined(RADIO_SUBSYSTEM) || defined(BME280_SUBSYSTEM) // There will be no nodes if there isnt a radio or onboard sensor (as in clock mode)
 void buildNodeDisplayPage(int iCenterOffset, int iYOffset){
     int16_t x1,y1,iTmpX,iTmpY;
     uint16_t w,h;
@@ -203,8 +203,7 @@ void buildNodeDisplayPage(int iCenterOffset, int iYOffset){
     iNodeID = nodeList.currentNode();
     //if the day has rolled since the last update time then the age can return a neg number
     //its probably healthy to clear out the list daily, so clear it for any neg return val.
-    //Dont bother to check node SENSORID as thats the onboard sensor
-    if(iNodeID && (iNodeID != SENSORID)) {
+    if(iNodeID) {
         int age = nodeList.getNodeUpdateAge(iNodeID);
         //DEBUG_MSG("Node %i is %i min old\n", iNodeID, age);
         if (age > 60 || age < 0){
@@ -308,7 +307,7 @@ void buildNodeDisplayPage(int iCenterOffset, int iYOffset){
 
     nodeList.nextNode();
 }
-
+#endif
 //This should get called about every second or two
 void displayInfo(){
 
@@ -322,7 +321,9 @@ void displayInfo(){
 
     BuildCurrentTimePage(getCurrentXOffset(), iYOffset);
 
+#if defined(RADIO_SUBSYSTEM) || defined(BME280_SUBSYSTEM) // There will be no nodes if there isnt a radio or onboard sensor (as in clock mode)
     buildNodeDisplayPage(getCurrentXOffset(), iYOffset);
+#endif
 
     display.display();
 }
@@ -385,12 +386,16 @@ void displayTestInfo(){
     }
 
     iNodeID = nodeList.currentNode();
+    if(iNodeID) {
+        iF = int(atof(nodeInfo[nodeList.currentNode()].THP->F.c_str())+.49);
+        iRSSI = int(atof(nodeInfo[nodeList.currentNode()].THP->RSSI.c_str())+.49);
+        float dBAT = atof(nodeInfo[nodeList.currentNode()].THP->BAT.c_str());
 
-    iF = int(atof(nodeInfo[nodeList.currentNode()].THP->F.c_str())+.49);
-    iRSSI = int(atof(nodeInfo[nodeList.currentNode()].THP->RSSI.c_str())+.49);
-    float dBAT = atof(nodeInfo[nodeList.currentNode()].THP->BAT.c_str());
+        tempString = "ID:" + String(iNodeID) + " T:" + String(iF) + " S:" + String(iRSSI) + " B:" + String(dBAT) + " CD:" + status;
+    } else {
+        tempString = "CD:" + status; //There might not be any nodes if there is no radio or onboard sensor
+    }
 
-    tempString = "ID:" + String(iNodeID) + " T:" + String(iF) + " S:" + String(iRSSI) + " B:" + String(dBAT) + " CD:" + status;
     //clear the last line of text
     memset(display.getBuffer()+384,0,128);
     display.setFont(&TomThumb);
@@ -551,9 +556,11 @@ void doDisplay() {
                 displayTestInfo();
                 break;
             case DISPLAY_STATE_NONE:
+                //DEBUG_MSG("[DISPLAY] DISPLAY_STATE_NONE\n");
                 displayInfo();
                 break;
             case DISPLAY_STATE_SLEEP:
+                //DEBUG_MSG("[DISPLAY] DISPLAY_STATE_SLEEP\n");
                 displaySleep();
                 break;
             default:

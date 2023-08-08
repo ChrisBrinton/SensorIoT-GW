@@ -107,28 +107,9 @@ void clearCounts() {
 }
 
 void sendSensorData() {
+#ifdef MQTT_SUBSYSTEM
   sendNodeToMQTT(&nodeInfo[1]);
-}
-
-void getNicknames() {
-    
-    static bool nicknamesRequested = false;
-
-    if(!nicknamesRequested) {
-
-        // get command topic from config and replace placeholder strings
-        String commandTopic = getSetting("mqttCommandTopic", MQTT_COMMAND_TOPIC);
-        String tmpHN = String(getSetting("hostname", APP_NAME));
-        tmpHN.replace("_","/");
-        commandTopic.replace("{hostname}", tmpHN);
-
-        if ((WiFi.status() == WL_CONNECTED) && (mqttConnected())) {
-            nicknamesRequested = true;
-            mqttSend((char*)commandTopic.c_str(), (char*)"get_nicknames");
-            DEBUG_MSG("[DISPLAY] Nicknames requested via MQTT\n");
-        
-        } 
-    }
+#endif
 }
 
 void setNickname(char* json) {
@@ -268,10 +249,12 @@ void processMessage(packet_t * data) {
       
     }
 
+#ifdef MQTT_SUBSYSTEM
     sendNodeToMQTT(&nodeInfo[data->senderID]);
-
+#endif
 }
 
+#ifdef MQTT_SUBSYSTEM
 String getTopicMapping(String ID, String key) {
   String returnTopic = "BLANK";
   // Try to find a matching mapping
@@ -310,7 +293,7 @@ void sendNodeToMQTT(_node_t * node) {
   mqttSend((char*) getTopicMapping(String(node->senderID), String("RSSI")).c_str(), (char *) node->THP->RSSI.c_str());
 
 }
-
+#endif
 // -----------------------------------------------------------------------------
 // Hardware
 // -----------------------------------------------------------------------------
@@ -327,7 +310,7 @@ void hardwareSetup() {
 }
 
 void hardwareLoop() {
-
+#ifdef MQTT_SUBSYSTEM
     // Heartbeat
     static unsigned long last_heartbeat = 0;
     if ((millis() - last_heartbeat > HEARTBEAT_INTERVAL) || (last_heartbeat == 0)) {
@@ -342,7 +325,7 @@ void hardwareLoop() {
         }
         DEBUG_MSG("[BEAT] Free heap: %d\n", ESP.getFreeHeap());
     }
-
+#endif
 }
 
 void welcome() {
@@ -411,38 +394,58 @@ void setup() {
         setSetting("hostname", String() + getIdentifier());
         saveSettings();
     }
+
+#ifdef MQTT_SUBSYSTEM
     //ensure backwards compatibility
     if(getSetting("mqttEnabled", MQTT_ENABLED) == "true") {
         setSetting("mqttEnabled", "on");
         saveSettings();
     }
-
-
+#endif
+#ifdef WIFI_SUBSYSTEM
     wifiSetup();
+#endif
     otaSetup();
+#ifdef MQTT_SUBSYSTEM
     mqttSetup();
+#endif
+#ifdef RADIO_SUBSYSTEM
     radioSetup(); 
+#endif
+#ifdef NTP_SUBSYSTEM
     ntpSetup();
+#endif
     sensorSetup(); 
-    displaySetup();     
+#ifdef DISPLAY_SUBSYSTEM
+    displaySetup();   
+#endif
     webSetup();
     restartSetup();
 
 }
 
 void loop() {
-
     hardwareLoop();
     settingsLoop();
+#ifdef WIFI_SUBSYSTEM
     wifiLoop();
+#endif
     otaLoop();
+#ifdef MQTT_SUBSYSTEM
     mqttLoop();
-    radioLoop();
-    ntpLoop();
-    sensorLoop();
-    displayLoop();
-    restartLoop();
     getNicknames();
+#endif
+#ifdef RADIO_SUBSYSTEM
+    radioLoop();
+#endif
+#ifdef NTP_SUBSYSTEM
+    ntpLoop();
+#endif
+    sensorLoop();
+#ifdef DISPLAY_SUBSYSTEM
+    displayLoop();
+#endif
+    restartLoop();
 
 
     yield();
