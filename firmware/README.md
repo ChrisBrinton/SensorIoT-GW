@@ -35,6 +35,24 @@ To deploy to your device you need to upload both the SPIFFS filesystem that cont
 
 
 
+## Publishing
 
+The GW publishes to MQTT in the following way:
 
+The topic format for our backend looks like:
+/<prefix>/<hostname>/<node_id>/<data_type>/<data>
 
+ <prefix> is GDESGW1 for no particular reason other than I needed something to differentiate messages at a high level in case I wanted to use the broker for a completely different set of messages. For those trivia minded, it stands for GeekDayEnvironmentSensorGateWay model 1
+
+<hostname> is a unique 6 digit number. Just pick one for each independent MQTT publisher
+
+<node_id> is for each differentiated sensor cluster from the hostname. So you could publish two different temp readings from the same MQTT publisher by changing the node #
+
+<data_type> is the sensor data type along the lines of H for humidity, P for pressure and F for temperature (sorry metric users)
+
+<data> is the (presumably) numeric value (assumed to be a float of not too many decimal places)
+
+There are a couple of builtin monitoring data types as well that can be safely ignored if you arent using my hardware: BAT for battery voltage and RSSI for signal strength of the node
+
+That all boils down to a real message that looks like:
+/GDESGW1/141188/1/F/78.33
