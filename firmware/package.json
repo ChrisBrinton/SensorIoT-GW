@@ -7,7 +7,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "del": "^2.2.1",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-clean-css": "^2.0.10",
     "gulp-gzip": "^1.4.0",
     "gulp-htmlmin": "^2.0.0",
